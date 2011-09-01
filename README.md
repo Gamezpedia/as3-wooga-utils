@@ -23,6 +23,13 @@ Change log
 
 * **[Added]** Zoom class for calculating a proper zoom level
 
+
+**0.0.2** (Snapshot)
+
+* **[Added]** user.properties for user specific settings
+* - copy default.user.properties to user.properties
+* - adjust it to your local settings
+
 Roadmap
 -------
 
