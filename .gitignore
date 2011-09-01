@@ -10,3 +10,5 @@ docs/*
 example/bin/*.zip
 example/bin/*.swf
 script/user.properties
+
+out/test/as3-wooga-utils/_flexunit.swf
