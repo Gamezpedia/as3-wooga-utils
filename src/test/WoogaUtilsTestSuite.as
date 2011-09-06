@@ -8,7 +8,6 @@ package {
 	[RunWith("org.flexunit.runners.Suite")]
 	public class WoogaUtilsTestSuite {
 		public var soundServiceTest:SoundServiceTest;
-		//public var syncedTickerTest:SyncedTickerTest;
 		public var timeServiceTest:TimeServiceTest;
 		public var timeTickerTest:TimeTickerTest;
 		public var zoomTest:ZoomTest;
