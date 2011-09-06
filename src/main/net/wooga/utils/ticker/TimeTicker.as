@@ -1,10 +1,6 @@
 package net.wooga.utils.ticker {
 	public class TimeTicker extends AbstractTicker {
-		override public function tick(time:Number):void {
-			if (!_tickers.length) {
-				return;
-			}
-
+		override protected function handleTickers(time:Number):void {
 			var ticker:ITicker = getFirstTicker();
 			var nextTicker:ITicker;
 			var tickCount:int = 0;

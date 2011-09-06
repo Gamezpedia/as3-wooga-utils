@@ -13,7 +13,7 @@ package {
 	import net.wooga.utils.ticker.TimeService;
 	import net.wooga.utils.ticker.TimeTicker;
 
-	[SWF(backgroundColor="#FFFFFF", width="760", height="600", frameRate="7")]
+	[SWF(backgroundColor="#FFFFFF", width="760", height="600", frameRate="30")]
 	public class Main extends Sprite {
 		private var _time:TimeService;
 		private var _ticker:ITicking;
@@ -25,8 +25,8 @@ package {
 
 		public function Main() {
 			initTime();
-			initTimeTicker();
-			//initFrameTicker();
+			//initTimeTicker();
+			initFrameTicker();
 			initAsset();
 
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -92,7 +92,7 @@ package {
 			trace(_lastTime, now);
 			_lastTime = now;
 
-			//moveAsset(factor);
+			moveAsset(factor);
 		}
 
 		private function moveAsset(factor:Number):void {

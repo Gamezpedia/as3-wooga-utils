@@ -3,6 +3,14 @@ package net.wooga.utils.ticker {
 		protected var _tickers:Array = [];
 
 		public function tick(time:Number):void {
+			if (!_tickers.length) {
+				return;
+			}
+
+			handleTickers(time);
+		}
+
+		protected function handleTickers(time:Number):void {
 
 		}
 
