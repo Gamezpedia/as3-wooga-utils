@@ -25,7 +25,9 @@ package net.wooga.utils.ticker {
 				}
 			}
 
-			executeTicker(ticker, tickCount);
+			if (tickCount) {
+				executeTicker(ticker, tickCount);
+			}
 		}
 
 		override protected function addTicker(ticker:ITicker):void {

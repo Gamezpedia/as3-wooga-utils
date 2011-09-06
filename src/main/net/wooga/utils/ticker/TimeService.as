@@ -1,56 +1,78 @@
 package net.wooga.utils.ticker {
-	import flash.events.Event;
 	import flash.utils.getTimer;
 
 	public class TimeService {
-		private var _startTime:Number;
-		private var _lastTime:Number;
+		private static const SECOND:int = 1000;
+
+		private var _lastTimeStamp:Number;
+		private var _currentTimeStamp:Number;
+
+		private var _timeConstant:Number = 1.0;
 		private var _targetFrameRate:Number;
 		private var _maxFrameCount:int;
 		private var _lastFrameTimes:Array = [];
-		private var _timeNow:Number = 0;
+		private var _currentTime:Number = 0;
 		private var _frameRateFactor:Number = 0;
 		private var _currentFrameRate:Number = 0;
 
 		public function init(startTime:Number, targetFrameRate:int, maxFrameCount:int = 20):void {
-			_startTime = _lastTime = startTime - getTimer();
 			_targetFrameRate = targetFrameRate;
 			_maxFrameCount = maxFrameCount;
-			_lastFrameTimes.push(1000 / _targetFrameRate);
+			_lastTimeStamp = _currentTimeStamp = getTimer();
+			_currentTime = startTime + _currentTimeStamp;
 		}
 
-		public function get timeNow():Number {
-			return _timeNow ||= _startTime + getTimer();
+		public function set timeConstant(value:Number):void {
+			value = Math.max(0, value);
+
+			if (value != _timeConstant) {
+				_timeConstant = value;
+
+				trace(_timeConstant);
+			}
 		}
 
-		public function get lastTime():Number {
-			return _lastTime;
+		public function get timeConstant():Number {
+			return _timeConstant;
+		}
+
+		public function get currentTime():Number {
+			return _currentTime;
 		}
 
 		public function get frameRateFactor():Number {
-			return _frameRateFactor ||= _targetFrameRate / currentFrameRate;
+			return _frameRateFactor;
 		}
 
 		public function get currentFrameRate():Number {
-			return _currentFrameRate ||= calcCurrentFPS();
+			return _currentFrameRate;
 		}
 
 		public function set targetFrameRate(value:Number):void {
 			_targetFrameRate = value;
 		}
 
-		public function onEnterFrame(event:Event = null):void {
-			_lastFrameTimes.push(timeNow - _lastTime);
+		public function update():void {
+			_lastTimeStamp = _currentTimeStamp;
+			_currentTimeStamp = getTimer();
 
+			var timeStep:Number = (_currentTimeStamp - _lastTimeStamp) * _timeConstant;
+			_currentTime += timeStep;
+
+			updateLastFrameRates(timeStep);
+			_currentFrameRate = calcCurrentFrameRate();
+			_frameRateFactor = _targetFrameRate / _currentFrameRate * _timeConstant;
+		}
+
+		private function updateLastFrameRates(timeStep:Number):void {
+			_lastFrameTimes.push(timeStep);
+			
 			if (_lastFrameTimes.length > _maxFrameCount) {
 				_lastFrameTimes.shift();
 			}
-
-			_lastTime = timeNow;
-			_currentFrameRate = _frameRateFactor = _timeNow = 0;
 		}
 
-		private function calcCurrentFPS():Number {
+		private function calcCurrentFrameRate():Number {
 			var sum:Number = 0;
 
 			for each (var value:Number in _lastFrameTimes) {
@@ -59,7 +81,7 @@ package net.wooga.utils.ticker {
 
 			var average:Number = sum / _lastFrameTimes.length;
 
-			return 1000 / average;
+			return SECOND / average;
 		}
 	}
 }

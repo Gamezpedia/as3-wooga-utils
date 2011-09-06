@@ -13,7 +13,7 @@ package net.wooga.utils.ticker {
 			}
 		}
 
-		public function removeCallback(tick:int, callback:Function) {
+		public function removeCallback(tick:int, callback:Function):void {
 			var ticker:ITicker = getTicker(tick, callback);
 			removeTicker(ticker);
 		}
