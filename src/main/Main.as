@@ -75,9 +75,9 @@ package {
 
 		private function onTick(factor:Number):void {
 			var date:Date = new Date(_time.currentTime);
-			_tf.htmlText = date.toString();
 
-			//trace("FACTOR", _time.frameRateFactor);
+			_tf.htmlText = date.toString() + " " + _time.timeConstant;
+
 			moveAsset();
 		}
 
@@ -87,7 +87,7 @@ package {
 			if (xPos <= 0) {
 				_dir = Math.abs(_dir);
 				trace(getTimer());
-			} else if (xPos > 400) {
+			} else if (xPos > stage.stageWidth - _timelineController.clip.width) {
 				_dir = -Math.abs(_dir);
 				trace(getTimer());
 			}

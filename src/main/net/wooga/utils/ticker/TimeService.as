@@ -53,10 +53,9 @@ package net.wooga.utils.ticker {
 			_currentTimeStamp = getTimer();
 
 			var timeStep:Number = (_currentTimeStamp - _lastTimeStamp) * _timeConstant;
-			//trace("timeStep", timeStep, _currentTimeStamp);
 			_currentTime += timeStep;
-
 			updateLastFrameRates(timeStep);
+			
 			_currentFrameRate = calcCurrentFrameRate();
 			_frameRateFactor = _targetFrameRate / _currentFrameRate * _timeConstant;
 		}
