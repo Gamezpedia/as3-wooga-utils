@@ -1,7 +1,5 @@
 package net.wooga.utils.ticker {
 	public class TimeTicker extends AbstractTicker {
-		private var _tickers:Array = [];
-
 		override public function tick(time:Number):void {
 			if (!_tickers.length) {
 				return;
@@ -13,7 +11,7 @@ package net.wooga.utils.ticker {
 
 			while (ticker.nextTickAt <= time) {
 				tickCount++;
-				ticker.updateNextTick();
+				ticker.resetNextTick();
 				updateSorting();
 
 				nextTicker = getFirstTicker();
@@ -31,26 +29,9 @@ package net.wooga.utils.ticker {
 		}
 
 		override protected function addTicker(ticker:ITicker):void {
-			_tickers.push(ticker);
+			super.addTicker(ticker);
+
 			updateSorting();
-		}
-
-		override protected function getTicker(tick:int, callback:Function):ITicker {
-			for each (var ticker:ITicker in _tickers) {
-				if (ticker.contains(tick,  callback)) {
-					return ticker;
-				}
-			}
-
-			return null;
-		}
-
-		override protected function removeTicker(ticker:ITicker):void {
-			var index:int = _tickers.indexOf(ticker);
-
-			if (index >= 0) {
-				_tickers.splice(index, 1);
-			}
 		}
 
 		private function updateSorting():void {

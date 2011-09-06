@@ -8,20 +8,25 @@ package {
 	import flash.utils.getTimer;
 
 	import net.wooga.utils.display.TimelineController;
+	import net.wooga.utils.ticker.FrameTicker;
+	import net.wooga.utils.ticker.ITicking;
 	import net.wooga.utils.ticker.TimeService;
 	import net.wooga.utils.ticker.TimeTicker;
 
 	[SWF(backgroundColor="#FFFFFF", width="760", height="600", frameRate="30")]
 	public class Main extends Sprite {
 		private var _time:TimeService;
-		private var _ticker:TimeTicker;
+		private var _ticker:ITicking;
 		private var _timelineController:TimelineController;
-		private var _dir:Number = 2;
+		private var _dir:Number = 5;
 		private var _tf:TextField;
+
+		private var _lastTime:Number;
 
 		public function Main() {
 			initTime();
-			initTicker();
+			initTimeTicker();
+			//initFrameTicker();
 			initAsset();
 
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -48,9 +53,14 @@ package {
 			_time.init(0, 40);
 		}
 
-		private function initTicker():void {
+		private function initTimeTicker():void {
 			_ticker = new TimeTicker();
-			_ticker.addCallback(25, onTick, int.MAX_VALUE, _time.currentTime);
+			_ticker.addCallback(66, onTick, int.MAX_VALUE, _time.currentTime);
+		}
+
+		private function initFrameTicker():void {
+			_ticker = new FrameTicker();
+			_ticker.addCallback(2, onTick, int.MAX_VALUE);
 		}
 
 		private function initAsset():void {
@@ -78,10 +88,13 @@ package {
 
 			_tf.htmlText = date.toString() + " " + _time.timeConstant;
 
-			moveAsset();
+			var now:Number = getTimer();
+			_lastTime = now;
+
+			moveAsset(factor);
 		}
 
-		private function moveAsset():void {
+		private function moveAsset(factor:Number):void {
 			var xPos:Number = _timelineController.clip.x;
 
 			if (xPos <= 0) {
@@ -89,13 +102,13 @@ package {
 				trace(getTimer());
 			} else if (xPos > stage.stageWidth - _timelineController.clip.width) {
 				_dir = -Math.abs(_dir);
+				//_ticker.removeCallback(33, onTick);
 				trace(getTimer());
 			}
 
 			var step:Number = _dir * _time.frameRateFactor;
 			_timelineController.clip.x += step;
-
-			_timelineController.play(_time.frameRateFactor);
+			_timelineController.play(factor * _time.frameRateFactor);
 		}
 	}
 }

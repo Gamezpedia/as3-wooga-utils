@@ -1,10 +1,12 @@
 package net.wooga.utils.ticker {
 	public class AbstractTicker implements ITicking {
+		protected var _tickers:Array = [];
+
 		public function tick(time:Number):void {
 
 		}
 
-		public function addCallback(tick:int, callback:Function, repeats:int, time:Number, executeAtOnce:Boolean = false):void {
+		public function addCallback(tick:int, callback:Function, repeats:int, time:Number = 0, executeAtOnce:Boolean = false):void {
 			var ticker:ITicker = createTicker(tick, callback, repeats, time);
 			addTicker(ticker);
 
@@ -19,18 +21,28 @@ package net.wooga.utils.ticker {
 		}
 
 		protected function addTicker(ticker:ITicker):void {
-
+			_tickers.push(ticker);
 		}
 
 		protected function getTicker(tick:int, callback:Function):ITicker {
+			for each (var ticker:ITicker in _tickers) {
+				if (ticker.contains(tick, callback)) {
+					return ticker;
+				}
+			}
+
 			return null;
 		}
 
 		protected function removeTicker(ticker:ITicker):void {
+			var index:int = _tickers.indexOf(ticker);
 
+			if (index >= 0) {
+				_tickers.splice(index, 1);
+			}
 		}
 
-		protected function executeTicker(ticker:ITicker, tickCount:Number):void {
+		protected function executeTicker(ticker:ITicker, tickCount:Number = 1):void {
 			ticker.execute(tickCount);
 
 			if (ticker.repeats <= 0) {
@@ -67,6 +79,10 @@ class TickerVO implements ITicker {
 		return _nextTickAt;
 	}
 
+	public function set nextTickAt(value:Number):void {
+		_nextTickAt = value;
+	}
+
 	public function execute(factor:Number):void {
 		if (factor > _repeats) {
 			factor = _repeats;
@@ -76,7 +92,7 @@ class TickerVO implements ITicker {
 		_callback(factor);
 	}
 
-	public function updateNextTick():void {
+	public function resetNextTick():void {
 		_nextTickAt += _tick;
 	}
 
