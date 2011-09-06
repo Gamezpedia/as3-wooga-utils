@@ -23,12 +23,8 @@ package net.wooga.utils.ticker {
 		}
 
 		public function set timeConstant(value:Number):void {
-			value = Math.max(0, value);
-
-			if (value != _timeConstant) {
+			if (value >= 0 && value != _timeConstant) {
 				_timeConstant = value;
-
-				trace(_timeConstant);
 			}
 		}
 
@@ -57,6 +53,7 @@ package net.wooga.utils.ticker {
 			_currentTimeStamp = getTimer();
 
 			var timeStep:Number = (_currentTimeStamp - _lastTimeStamp) * _timeConstant;
+			//trace("timeStep", timeStep, _currentTimeStamp);
 			_currentTime += timeStep;
 
 			updateLastFrameRates(timeStep);
@@ -79,9 +76,7 @@ package net.wooga.utils.ticker {
 				sum += value;
 			}
 
-			var average:Number = sum / _lastFrameTimes.length;
-
-			return SECOND / average;
+			return _lastFrameTimes.length / sum * SECOND;
 		}
 	}
 }

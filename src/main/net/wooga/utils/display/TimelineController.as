@@ -26,11 +26,9 @@ package net.wooga.utils.display {
 				_frameOverhead--;
 			}
 
-			var frame:int = (_clip.currentFrame + frameSteps) % _clip.totalFrames;
-
-			if (frame == 0) {
-				frame = _clip.totalFrames;
-			}
+			var frame:int = _clip.currentFrame + frameSteps;
+			frame %= _clip.totalFrames;
+			frame ||= _clip.totalFrames;
 
 			_clip.gotoAndStop(frame);
 		}

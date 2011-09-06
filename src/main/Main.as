@@ -5,9 +5,9 @@ package {
 	import flash.events.KeyboardEvent;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
+	import flash.utils.getTimer;
 
 	import net.wooga.utils.display.TimelineController;
-
 	import net.wooga.utils.ticker.TimeService;
 	import net.wooga.utils.ticker.TimeTicker;
 
@@ -16,7 +16,7 @@ package {
 		private var _time:TimeService;
 		private var _ticker:TimeTicker;
 		private var _timelineController:TimelineController;
-		private var _dir:Number = 1;
+		private var _dir:Number = 2;
 		private var _tf:TextField;
 
 		public function Main() {
@@ -31,10 +31,10 @@ package {
 		private function onKeyDown(event:KeyboardEvent):void {
 			switch (event.keyCode) {
 				case 191:
-					updateTimeConstant(-0.1);
+					updateTimeConstant(-0.2);
 					break;
 				case 221:
-					updateTimeConstant(0.1);
+					updateTimeConstant(0.2);
 					break;
 			}
 		}
@@ -56,6 +56,7 @@ package {
 		private function initAsset():void {
 			var clip:MovieClip = new TestAni();
 			clip.stop();
+			clip.y = 100;
 
 			_timelineController = new TimelineController();
 			_timelineController.clip = clip;
@@ -75,7 +76,8 @@ package {
 		private function onTick(factor:Number):void {
 			var date:Date = new Date(_time.currentTime);
 			_tf.htmlText = date.toString();
-			
+
+			//trace("FACTOR", _time.frameRateFactor);
 			moveAsset();
 		}
 
@@ -84,8 +86,10 @@ package {
 
 			if (xPos <= 0) {
 				_dir = Math.abs(_dir);
+				trace(getTimer());
 			} else if (xPos > 400) {
 				_dir = -Math.abs(_dir);
+				trace(getTimer());
 			}
 
 			var step:Number = _dir * _time.frameRateFactor;
