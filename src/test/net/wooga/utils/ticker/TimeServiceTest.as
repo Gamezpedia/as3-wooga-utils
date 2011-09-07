@@ -20,9 +20,12 @@ package net.wooga.utils.ticker {
 			_timeService.init(currentTime, frameRate);
 			_timeService.targetFrameRate = frameRate * frameRateFactor;
 
+			_timeService.update();
+
 			assertEquals(currentTime + getTimer(), _timeService.currentTime);
 			//assertEquals(frameRate, _timeService.currentFrameRate);
-			//assertEquals(frameRateFactor, _timeService.frameRateFactor);
+			//assertEquals(Infinity, _timeService.currentFrameRate);
+			//assertEquals(0, _timeService.frameRateFactor);
 		}
 	}
 }
