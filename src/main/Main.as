@@ -50,7 +50,7 @@ package {
 
 		private function initTime():void {
 			_time = new TimeService();
-			_time.init(0, 40);
+			_time.init(0, 30);
 		}
 
 		private function initTimeTicker():void {
@@ -60,7 +60,7 @@ package {
 
 		private function initFrameTicker():void {
 			_ticker = new FrameTicker();
-			_ticker.addCallback(2, onTick, int.MAX_VALUE);
+			_ticker.addCallback(1, onTick, int.MAX_VALUE);
 		}
 
 		private function initAsset():void {
@@ -69,6 +69,14 @@ package {
 			clip.y = 100;
 
 			_timelineController = new TimelineController();
+			_timelineController.loops = 2;
+			_timelineController.addCallback(1, timelineCallback);
+			_timelineController.addCallback(4, timelineCallback);
+			_timelineController.addCallback(24, timelineCallback);
+			_timelineController.addCallback(54, timelineCallback);
+			_timelineController.addCallback(47, timelineCallback);
+			_timelineController.addCallback(4, timelineCallback);
+			_timelineController.addCallback(14, timelineCallback);
 			_timelineController.clip = clip;
 
 			addChild(clip);
@@ -76,6 +84,11 @@ package {
 			_tf = new TextField();
 			_tf.autoSize = TextFieldAutoSize.LEFT;
 			addChild(_tf);
+		}
+
+		private function timelineCallback(timeline:TimelineController):void {
+			trace(timeline.currentFrame);
+			//timeline.removeCallback(timeline.currentFrame, timelineCallback);
 		}
 
 		private function onEnterFrame(event:Event):void {
@@ -88,10 +101,6 @@ package {
 
 			_tf.htmlText = date.toString() + " " + _time.timeConstant;
 
-			var now:Number = getTimer();
-			trace(_lastTime, now);
-			_lastTime = now;
-
 			moveAsset(factor);
 		}
 
@@ -100,11 +109,9 @@ package {
 
 			if (xPos <= 0) {
 				_dir = Math.abs(_dir);
-				trace(getTimer());
 			} else if (xPos > stage.stageWidth - _timelineController.clip.width) {
 				_dir = -Math.abs(_dir);
 				//_ticker.removeCallback(33, onTick);
-				trace(getTimer());
 			}
 
 			var step:Number = _dir * _time.frameRateFactor;
