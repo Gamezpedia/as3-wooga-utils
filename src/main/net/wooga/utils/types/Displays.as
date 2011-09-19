@@ -62,14 +62,14 @@ package net.wooga.utils.types {
 		 * @param cont container to display
 		 * @param name current path
 		 */
-		public static function showChilds(cont:DisplayObjectContainer, name:String = ""):void {
+		public static function showChilds(cont:DisplayObjectContainer, name:String = "", separator:String = "/"):void {
 			var child:DisplayObject;
 
 			for (var i:int = 0; i < cont.numChildren; i++) {
 				child = cont.getChildAt(i);
 
 				if (child is DisplayObjectContainer) {
-					showChilds(DisplayObjectContainer(child), name + "/" + child.name);
+					showChilds(DisplayObjectContainer(child), name + separator + child.name, separator);
 				}
 			}
 		}
