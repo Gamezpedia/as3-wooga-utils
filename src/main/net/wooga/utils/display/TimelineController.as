@@ -5,8 +5,8 @@ package net.wooga.utils.display {
 	public class TimelineController {
 		private var _callbacks:Dictionary = new Dictionary();
 		private var _clip:MovieClip;
-		private var _totalLoops:int = 1;
-		private var _loopsLeft:int = 1;
+		private var _totalRepeats:int = 1;
+		private var _repeatsLeft:int = 1;
 		private var _frameOverhead:Number = 0;
 		private var _totalFrames:int;
 		private var _currentFrame:int;
@@ -23,12 +23,12 @@ package net.wooga.utils.display {
 			_currentFrame--;
 		}
 
-		public function set loops(value:int):void {
-			_totalLoops = _loopsLeft = value;
+		public function set repeats(value:int):void {
+			_totalRepeats = _repeatsLeft = value;
 		}
 
-		public function get loops():int {
-			return _totalLoops;
+		public function get repeats():int {
+			return _totalRepeats;
 		}
 
 		public function get totalFrames():int {
@@ -54,13 +54,11 @@ package net.wooga.utils.display {
 		}
 
 		public function play(step:Number = 1.0):void {
-			if (!_loopsLeft || step <= 0) {
-				return;
+			if (_repeatsLeft && step > 0) {
+				var frameSteps:int = calcFrameSteps(step);
+				handleFrameSteps(frameSteps);
+				_clip.gotoAndStop(_currentFrame);
 			}
-
-			var frameSteps:int = calcFrameSteps(step);
-			handleFrameSteps(frameSteps);
-			_clip.gotoAndStop(_currentFrame);
 		}
 
 		private function calcFrameSteps(step:Number):int {
@@ -77,19 +75,22 @@ package net.wooga.utils.display {
 
 		private function handleFrameSteps(frameSteps:int):void {
 			while (frameSteps--) {
-				if (_loopsLeft) {
-					++_currentFrame;
-
-					if (_currentFrame > _totalFrames) {
-						--_loopsLeft;
-						_currentFrame %= _totalFrames;
-						_currentFrame ||= _totalFrames;
-					}
-
+				if (_repeatsLeft) {
+					updateCurrentFrame();
 					handleCallback();
 				} else {
 					frameSteps = 0;
 				}
+			}
+		}
+
+		private function updateCurrentFrame():void {
+			++_currentFrame;
+
+			if (_currentFrame >= _totalFrames) {
+				--_repeatsLeft;
+				_currentFrame %= _totalFrames;
+				_currentFrame ||= _totalFrames;
 			}
 		}
 

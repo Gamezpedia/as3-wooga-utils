@@ -69,7 +69,7 @@ package {
 			clip.y = 100;
 
 			_timelineController = new TimelineController();
-			_timelineController.loops = 2;
+			_timelineController.repeats = 2;
 			_timelineController.addCallback(1, timelineCallback);
 			_timelineController.addCallback(4, timelineCallback);
 			_timelineController.addCallback(24, timelineCallback);
