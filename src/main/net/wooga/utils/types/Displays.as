@@ -1,7 +1,10 @@
 package net.wooga.utils.types {
 	import flash.display.*;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+
+	import net.wooga.utils.display.FrameDataVO;
 
 	/**
 	 * helper class to make handling display objects easier
@@ -221,6 +224,62 @@ package net.wooga.utils.types {
 			var reg:Point = getRegPoint(display, xDir, yDir);
 			display.x = reg.x;
 			display.y = reg.y;
+		}
+
+		public static function parseTimeline(clip:MovieClip, scale:Number = 1.0, frames:Vector.<FrameDataVO> = null):Vector.<FrameDataVO> {
+			if (!frames) {
+				frames = new <FrameDataVO>[];
+			}
+
+			var totalFrames:int = clip.totalFrames;
+			var frameData:FrameDataVO;
+			var rect:Rectangle;
+
+			for (var frame:int = 1; frame <= totalFrames; ++frame) {
+				frameData = getFrameData(frame, frames);
+				rect = getCurrentRect(clip, frame);
+				updateFrameData(frameData, rect, scale, clip);
+			}
+
+			return frames;
+		}
+
+		private static function getCurrentRect(clip:MovieClip, frame:int):Rectangle {
+			clip.gotoAndStop(frame);
+
+			return clip.getRect(clip);
+		}
+
+		private static function getFrameData(frame:int, frames:Vector.<FrameDataVO>):FrameDataVO {
+			var frameData:FrameDataVO;
+
+			if (frame < frames.length) {
+				frameData = frames[frame - 1] as FrameDataVO;
+			} else {
+				frameData = new FrameDataVO();
+				frames.push(frameData);
+			}
+
+			return frameData;
+		}
+
+		private static function updateFrameData(frameData:FrameDataVO, rect:Rectangle, scale:Number, clip:MovieClip):void {
+			frameData.bitmapData = drawBitmap(rect, scale, clip);
+			frameData.offsetX = rect.x;
+			frameData.offsetY = rect.y;
+			frameData.scale = scale;
+		}
+
+		private static function drawBitmap(rect:Rectangle, scale:Number, clip:MovieClip):BitmapData {
+			var matrix:Matrix = new Matrix();
+			matrix.tx = -rect.x;
+			matrix.ty = -rect.y;
+			matrix.scale(scale, scale);
+
+			var bitmapData:BitmapData = new BitmapData(rect.width * scale, rect.height * scale, true, 0xFF);
+			bitmapData.draw(clip, matrix);
+
+			return bitmapData;
 		}
 	}
 }
