@@ -5,8 +5,13 @@ package net.wooga.utils.types {
 	public class Assets {
 		public static function getMovieClip(id:String):MovieClip {
 			var assetClass:Class = getAssetClass(id);
+			var assetInstance:MovieClip = null;
 
-			return assetClass ? new assetClass() : null;
+			if (assetClass) {
+				assetInstance = new assetClass();
+			}
+
+			return assetInstance;
 		}
 
 
@@ -16,11 +21,10 @@ package net.wooga.utils.types {
 			try {
 				resultclass = getDefinitionByName(id) as Class;
 			} catch(error:ReferenceError) {
-
+				
 			}
 
 			return resultclass;
 		}
-
 	}
 }
