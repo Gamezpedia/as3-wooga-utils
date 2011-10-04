@@ -7,19 +7,19 @@ package {
 	import org.as3commons.logging.level.INFO;
 	import org.as3commons.logging.level.WARN;
 
-	public function l(message:String, level:int = 0x0020, owner:Object = ""):void {
+	public function l(message:String, params:Array = null, level:int = 0x0020, owner:Object = ""):void {
 		var logger:ILogger = getLogger(owner);
 
 		if (level <= FATAL && logger.fatalEnabled) {
-			logger.fatal(message);
+			logger.fatal(message, params);
 		} else if (level <= ERROR && logger.errorEnabled) {
-			logger.error(message);
+			logger.error(message, params);
 		} else if (level <= WARN && logger.warnEnabled) {
-			logger.warn(message);
+			logger.warn(message, params);
 		} else if (level <= INFO && logger.infoEnabled) {
-			logger.info(message);
+			logger.info(message, params);
 		} else if (level <= DEBUG && logger.debugEnabled) {
-			logger.debug(message);
+			logger.debug(message, params);
 		}
 	}
 }
