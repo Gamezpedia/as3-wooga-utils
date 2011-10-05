@@ -1,10 +1,11 @@
 package net.wooga.utils.types {
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.utils.getDefinitionByName;
 
 	public class Assets {
 		public static function getMovieClip(id:String):MovieClip {
-			var assetClass:Class = getAssetClass(id);
+			var assetClass:Class = getClass(id);
 			var assetInstance:MovieClip = null;
 
 			if (assetClass) {
@@ -14,8 +15,18 @@ package net.wooga.utils.types {
 			return assetInstance;
 		}
 
+		public static function getSprite(id:String):Sprite {
+			var assetClass:Class = getClass(id);
+			var assetInstance:Sprite = null;
 
-		public static function getAssetClass(id:String):Class {
+			if (assetClass) {
+				assetInstance = new assetClass();
+			}
+
+			return assetInstance;
+		}
+
+		public static function getClass(id:String):Class {
 			var resultclass:Class;
 
 			try {
