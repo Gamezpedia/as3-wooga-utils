@@ -15,7 +15,7 @@ package net.wooga.utils.ticker {
 		private var _frameRateFactor:Number = 0;
 		private var _currentFrameRate:Number = 0;
 
-		public function init(startTime:Number, targetFrameRate:int, maxFrameCount:int = 20):void {
+		public function init(startTime:Number, targetFrameRate:int = 30, maxFrameCount:int = 20):void {
 			_targetFrameRate = targetFrameRate;
 			_maxFrameCount = maxFrameCount;
 			_currentTimeStamp = getTimer();
