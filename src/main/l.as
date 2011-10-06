@@ -7,7 +7,7 @@ package {
 	import org.as3commons.logging.level.INFO;
 	import org.as3commons.logging.level.WARN;
 
-	public function l(message:String, params:Array = null, level:int = 0x0020, owner:Object = ""):void {
+	public function l(message:*, params:Array = null, level:int = 0x0020, owner:Object = ""):void {
 		var logger:ILogger = getLogger(owner);
 
 		if (level <= FATAL && logger.fatalEnabled) {
