@@ -59,8 +59,6 @@ package net.wooga.utils.iterators {
 
 				return item;
 			} else {
-				throw new Error(NO_NEXT_ERROR);
-
 				return null;
 			}
 		}
