@@ -1,41 +1,23 @@
 package net.wooga.utils.types {
+	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.utils.getDefinitionByName;
 
 	public class Assets {
 		public static function getMovieClip(id:String):MovieClip {
-			var assetClass:Class = getClass(id);
-			var assetInstance:MovieClip = null;
-
-			if (assetClass) {
-				assetInstance = new assetClass();
-			}
-
-			return assetInstance;
+			return getInstance(id) as MovieClip;
 		}
 
 		public static function getSprite(id:String):Sprite {
-			var assetClass:Class = getClass(id);
-			var assetInstance:Sprite = null;
-
-			if (assetClass) {
-				assetInstance = new assetClass();
-			}
-
-			return assetInstance;
+			return getInstance(id) as Sprite;
 		}
 
-		public static function getClass(id:String):Class {
-			var resultclass:Class;
+		public static function getBitmap(id:String):Bitmap {
+			return getInstance(id) as Bitmap;
+		}
 
-			try {
-				resultclass = getDefinitionByName(id) as Class;
-			} catch(error:ReferenceError) {
-				
-			}
-
-			return resultclass;
+		private static function getInstance(id:String):* {
+			return Classes.getInstance(id);
 		}
 	}
 }
