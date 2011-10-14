@@ -1,6 +1,7 @@
 package net.wooga.utils.types {
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.asserts.assertNull;
+	import org.flexunit.asserts.fail;
 
 	public class Array2DTest {
 		private var _array:Array2D;
@@ -23,6 +24,17 @@ package net.wooga.utils.types {
 
 			_array.addItem(5, 3, 3);
 			assertNull(_array.getItem(3, 3));
+		}
+
+		[Test]
+		public function should_not_fit_items_into_array():void {
+			try {
+				_array.items = [null, null, null, null, null];
+
+				fail("should fail");
+			} catch (error:Error) {
+				assertEquals(Array2D.ITEMS_TOO_BIG_ERROR, error.message);
+			}
 		}
 	}
 }

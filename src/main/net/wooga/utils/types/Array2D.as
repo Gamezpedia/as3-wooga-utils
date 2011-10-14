@@ -5,6 +5,8 @@ package net.wooga.utils.types {
 	import org.as3commons.collections.framework.IIterator;
 
 	public class Array2D implements IIterable {
+		public static const ITEMS_TOO_BIG_ERROR:String = "the items do not fit into this array";
+
 		private var _items:Array = [];
 		private var _maxXLength:int;
 		private var _maxYLength:int;
@@ -15,7 +17,31 @@ package net.wooga.utils.types {
 		}
 
 		public function set items(value:Array):void {
-			_items = value;
+			if (verifyItemSize(value)) {
+				_items = value;
+			} else {
+				throw new Error(ITEMS_TOO_BIG_ERROR);
+			}
+		}
+
+		private function verifyItemSize(value:Array):Boolean {
+			var rowCount:int = value.length;
+
+			if (rowCount > _maxYLength) {
+				return false;
+			}
+
+			var row:Array;
+
+			for (var y:int = 0; y < rowCount; ++y) {
+				row = getRow(y);
+
+				if (row && row.length > _maxXLength) {
+					return false;
+				}
+			}
+
+			return true;
 		}
 
 		public function get length():int {
