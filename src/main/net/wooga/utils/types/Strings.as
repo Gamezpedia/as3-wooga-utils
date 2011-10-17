@@ -21,5 +21,9 @@ package net.wooga.utils.types {
 				return null;
 			}
 		}
+		
+		public static function reverse(targetString:String):String{
+			return targetString.split("").reverse().join("");
+		}
 	}
 }
