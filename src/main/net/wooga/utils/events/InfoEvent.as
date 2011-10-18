@@ -5,8 +5,8 @@ package net.wooga.utils.events {
 		private var _id:String;
 		private var _info:*;
 
-		public function InfoEvent(type:String, id:String = null, info:* = null, bubbles:Boolean = false, cancelable:Boolean = false) {
-			super(type, bubbles, cancelable);
+		public function InfoEvent(type:String = "", id:String = null, info:* = null, bubbles:Boolean = false, cancelable:Boolean = false) {
+			super(type || "", bubbles, cancelable);
 
 			_id = id;
 			_info = info;
