@@ -1,6 +1,5 @@
 .settings
 .project
-as3-wooga-utils.iml
 *tempViewerHTML.html
 bin/main/*.swc
 bin/main/*.swf
