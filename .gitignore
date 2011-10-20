@@ -1,6 +1,5 @@
 .settings
 .project
-.idea/*
 as3-wooga-utils.iml
 *tempViewerHTML.html
 bin/main/*.swc
@@ -14,3 +13,5 @@ example/bin/*.swf
 script/user.properties
 
 out/test/as3-wooga-utils/_flexunit.swf
+
+.idea/workspace.xml

@@ -23,5 +23,9 @@ package net.wooga.utils.events {
 		override public function clone():Event {
 			return new InfoEvent(type, id, info);
 		}
+
+		override public function toString():String {
+			return type + " : " + _id + " : " + _info.toString();
+		}
 	}
 }
