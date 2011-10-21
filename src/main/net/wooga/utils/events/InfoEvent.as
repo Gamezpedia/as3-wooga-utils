@@ -25,7 +25,17 @@ package net.wooga.utils.events {
 		}
 
 		override public function toString():String {
-			return type + " : " + _id + " : " + _info.toString();
+			var str:String = type;
+
+			if (_id != null) {
+				str += " : " + _id;
+			}
+
+			if (_info != null) {
+				str += " : " + _info.toString();
+			}
+
+			return str;
 		}
 	}
 }
