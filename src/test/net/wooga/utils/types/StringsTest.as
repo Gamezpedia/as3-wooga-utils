@@ -25,5 +25,10 @@ package net.wooga.utils.types {
 
 			assertEquals(expected, result);
 		}
+
+		[Test]
+		public function should_reverse_string():void{
+			assertEquals("tset", Strings.reverse("test"));
+		}
 	}
 }

@@ -83,5 +83,10 @@ package net.wooga.utils.types {
 		public static function scaleWithinRect(width:Number, height:Number, contWidth:Number, contHeight:Number):Number {
 			return Math.min(contWidth / width, contHeight / height);
 		}
+
+		public static function roundDecimal(num:Number, precision:int):Number {
+			var decimal:Number = Math.pow(10, precision);
+			return Math.round(decimal * num) / decimal;
+		}
 	}
 }

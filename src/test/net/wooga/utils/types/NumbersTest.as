@@ -79,5 +79,14 @@ package net.wooga.utils.types {
 			assertEquals(3, Numbers.scaleWithinRect(2, 3, 8, 9));
 			assertEquals(2, Numbers.scaleWithinRect(3, 2, 6, 5));
 		}
+		
+		
+		[Test]
+		public function shouldRoundNumbers():void{
+			assertEquals(1.1235, Numbers.roundDecimal(1.12345, 4));
+			assertEquals(1.123, Numbers.roundDecimal(1.12345, 3));
+			assertEquals(1.12, Numbers.roundDecimal(1.12345, 2));
+			assertEquals(1.1, Numbers.roundDecimal(1.12345, 1));
+		}
 	}
 }
