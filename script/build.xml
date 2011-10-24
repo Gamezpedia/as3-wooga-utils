@@ -14,7 +14,7 @@
 			<arg line="-o '${deploy.dir}/${binary.name}.swc'" />
 			<arg line="-sp '${src.dir}'" />
 			<arg line="-is '${src.dir}'" />
-			<arg line="-el '${libs.dir}'" />
+			<arg line="-l '${libs.dir}'" />
 			<arg line="-el '${playerglobal.swc}'" />
 			<arg line="-target-player ${target.player}" />
 		</exec>

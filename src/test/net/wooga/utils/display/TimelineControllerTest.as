@@ -14,9 +14,9 @@ package net.wooga.utils.display {
 		[Test]
 		public function should_set_clip():void {
 			var clip:MovieClip = new MovieClip();
-			_timeline.clip = clip;
+			_timeline.player = clip;
 
-			assertEquals(clip, _timeline.clip);
+			assertEquals(clip, _timeline.player);
 			assertEquals(clip.totalFrames, _timeline.totalFrames);
 
 			var currentFrame:int = Math.max(0, clip.currentFrame - 1);
@@ -41,7 +41,7 @@ package net.wooga.utils.display {
 
 			_timeline.addCallback(1, callback);
 			_timeline.repeats = repeats;
-			_timeline.clip = new MovieClip();
+			_timeline.player = new MovieClip();
 			_timeline.play(steps);
 
 			var expectedCalls:int = Math.min(steps, repeats);

@@ -1,26 +1,31 @@
 package net.wooga.utils.display {
-	import flash.display.MovieClip;
 	import flash.utils.Dictionary;
+
+	import net.wooga.utils.interfaces.IMoviePlayer;
 
 	public class TimelineController {
 		private var _callbacks:Dictionary = new Dictionary();
-		private var _clip:MovieClip;
+		private var _player:IMoviePlayer;
 		private var _totalRepeats:int = 1;
 		private var _repeatsLeft:int = 1;
 		private var _frameOverhead:Number = 0;
 		private var _totalFrames:int;
 		private var _currentFrame:int;
 
-		public function get clip():MovieClip {
-			return _clip;
+		public function get player():IMoviePlayer {
+			return _player;
 		}
 
-		public function set clip(value:MovieClip):void {
-			_clip = value;
+		public function set player(value:IMoviePlayer):void {
+			_player = value;
+			
+			initPlayerData(_player.totalFrames, _player.currentFrame);
+		}
+
+		private function initPlayerData(totalFrames:int, currentFrame:int):void {
 			_frameOverhead = 0;
-			_totalFrames = _clip.totalFrames;
-			_currentFrame = _clip.currentFrame || 1;
-			_currentFrame--;
+			_totalFrames = totalFrames;
+			_currentFrame = currentFrame;
 		}
 
 		public function set repeats(value:int):void {
@@ -57,8 +62,12 @@ package net.wooga.utils.display {
 			if (_repeatsLeft && step > 0) {
 				var frameSteps:int = calcFrameSteps(step);
 				handleFrameSteps(frameSteps);
-				_clip.gotoAndStop(_currentFrame);
+				setCurrentFrame();
 			}
+		}
+
+		private function setCurrentFrame():void {
+			_player.frame = _currentFrame;
 		}
 
 		private function calcFrameSteps(step:Number):int {
