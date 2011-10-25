@@ -2,7 +2,7 @@ package net.wooga.utils.ticker {
 	public class AbstractTicker implements ITicking {
 		protected var _tickers:Array = [];
 
-		public function tick(time:Number):void {
+		public function tick(time:Number = 0):void {
 			if (_tickers.length) {
 				handleTickers(time);
 			}
@@ -17,7 +17,7 @@ package net.wooga.utils.ticker {
 			addTicker(ticker);
 
 			if (executeAtOnce) {
-				executeTicker(ticker, 1);
+				executeTicker(ticker);
 			}
 		}
 
