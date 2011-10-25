@@ -1,7 +1,5 @@
 package net.wooga.utils.ticker {
-	import flash.utils.getTimer;
-
-	public class TimeService {
+	public class Time {
 		private static const SECOND:int = 1000;
 
 		private var _lastTimeStamp:Number;
@@ -15,10 +13,10 @@ package net.wooga.utils.ticker {
 		private var _frameRateFactor:Number = 0;
 		private var _currentFrameRate:Number = 0;
 
-		public function init(startTime:Number, targetFrameRate:int = 30, maxFrameCount:int = 20):void {
+		public function init(startTime:Number, timeStamp:int, targetFrameRate:int = 30, maxFrameCount:int = 20):void {
 			_targetFrameRate = targetFrameRate;
 			_maxFrameCount = maxFrameCount;
-			_currentTimeStamp = getTimer();
+			_currentTimeStamp = timeStamp;
 			_lastTimeStamp = _currentTimeStamp - SECOND / _targetFrameRate;
 			_currentTime = startTime + _currentTimeStamp;
 		}
@@ -45,25 +43,29 @@ package net.wooga.utils.ticker {
 			return _currentFrameRate;
 		}
 
+		public function get targetFrameRate():Number {
+			return _targetFrameRate;
+		}
+
 		public function set targetFrameRate(value:Number):void {
 			_targetFrameRate = value;
 		}
 
-		public function update():void {
+		public function update(timeStamp:int):void {
 			_lastTimeStamp = _currentTimeStamp;
-			_currentTimeStamp = getTimer();
+			_currentTimeStamp = timeStamp;
 
 			var timeStep:Number = (_currentTimeStamp - _lastTimeStamp) * _timeConstant;
 			_currentTime += timeStep;
 			updateLastFrameRates(timeStep);
-			
+
 			_currentFrameRate = calcCurrentFrameRate();
-			_frameRateFactor = _targetFrameRate / _currentFrameRate * _timeConstant;
+			_frameRateFactor = _targetFrameRate / _currentFrameRate;
 		}
 
 		private function updateLastFrameRates(timeStep:Number):void {
 			_lastFrameTimes.push(timeStep);
-			
+
 			if (_lastFrameTimes.length > _maxFrameCount) {
 				_lastFrameTimes.shift();
 			}
@@ -76,7 +78,7 @@ package net.wooga.utils.ticker {
 				sum += value;
 			}
 
-			return _lastFrameTimes.length / sum * SECOND;
+			return _lastFrameTimes.length / sum * SECOND * _timeConstant;
 		}
 	}
 }

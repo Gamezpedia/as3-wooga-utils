@@ -1,6 +1,4 @@
 package net.wooga.utils.display {
-	import flash.display.MovieClip;
-
 	import org.flexunit.asserts.assertEquals;
 
 	public class TimelineControllerTest {
@@ -12,15 +10,35 @@ package net.wooga.utils.display {
 		}
 
 		[Test]
-		public function should_set_clip():void {
-			var clip:MovieClip = new MovieClip();
-			_timeline.player = clip;
+		public function should_init_conntroller():void {
+			var totalFrames:int = 15;
 
-			assertEquals(clip, _timeline.player);
-			assertEquals(clip.totalFrames, _timeline.totalFrames);
+			_timeline.initPlayerData(totalFrames);
 
-			var currentFrame:int = Math.max(0, clip.currentFrame - 1);
-			assertEquals(currentFrame, _timeline.currentFrame);
+			assertEquals(totalFrames, _timeline.totalFrames);
+			assertEquals(0, _timeline.currentFrame);
+		}
+
+		[Test]
+		public function should_call_frame_setter():void {
+			_timeline.initPlayerData(10);
+
+			var calls:int = 0;
+
+			var callback:Function = function(frame:Object):void {
+				calls++;
+			};
+
+			_timeline.onSetFrame = callback;
+			_timeline.play(1);
+			assertEquals(1, calls);
+
+			_timeline.play(5);
+			assertEquals(2, calls);
+
+			_timeline.play(1);
+			_timeline.play(1);
+			assertEquals(4, calls);
 		}
 
 		[Test]
@@ -39,9 +57,9 @@ package net.wooga.utils.display {
 				calls++;
 			};
 
+			_timeline.initPlayerData(1, 0);
 			_timeline.addCallback(1, callback);
 			_timeline.repeats = repeats;
-			_timeline.player = new MovieClip();
 			_timeline.play(steps);
 
 			var expectedCalls:int = Math.min(steps, repeats);

@@ -19,7 +19,7 @@ package net.wooga.utils.ticker {
 				tickFactor += factor;
 			};
 
-			_ticker.addCallback(1000, callback, 5, 500);
+			_ticker.addCallback(500, 1000, callback, 5);
 			_ticker.tick(2000);
 			assertEquals(1, callCount);
 			assertEquals(1, tickFactor);

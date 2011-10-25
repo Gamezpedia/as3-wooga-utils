@@ -3,19 +3,17 @@ package net.wooga.utils.ticker {
 		protected var _tickers:Array = [];
 
 		public function tick(time:Number):void {
-			if (!_tickers.length) {
-				return;
+			if (_tickers.length) {
+				handleTickers(time);
 			}
-
-			handleTickers(time);
 		}
 
 		protected function handleTickers(time:Number):void {
 
 		}
 
-		public function addCallback(tick:int, callback:Function, repeats:int, time:Number = 0, executeAtOnce:Boolean = false):void {
-			var ticker:ITicker = createTicker(tick, callback, repeats, time);
+		public function addCallback(startTime:Number, interval:int, callback:Function, repeats:int, executeAtOnce:Boolean = false):void {
+			var ticker:ITicker = new TickerVO(startTime, interval, callback, repeats);
 			addTicker(ticker);
 
 			if (executeAtOnce) {
@@ -57,26 +55,22 @@ package net.wooga.utils.ticker {
 				removeTicker(ticker);
 			}
 		}
-
-		private function createTicker(tick:int, callback:Function, repeats:int, time:Number):ITicker {
-			return new TickerVO(tick, callback, repeats, time);
-		}
 	}
 }
 
 import net.wooga.utils.ticker.ITicker;
 
 class TickerVO implements ITicker {
-	private var _tick:int;
+	private var _interval:int;
 	private var _nextTickAt:Number;
 	private var _callback:Function;
 	private var _repeats:Number;
 
-	public function TickerVO(tick:int, callback:Function, repeats:Number, time:Number) {
-		_tick = tick;
+	public function TickerVO(startTime:Number, interval:int, callback:Function, repeats:int) {
+		_interval = interval;
 		_callback = callback;
 		_repeats = repeats;
-		_nextTickAt = time + _tick;
+		_nextTickAt = startTime + _interval;
 	}
 
 	public function get repeats():Number {
@@ -101,10 +95,10 @@ class TickerVO implements ITicker {
 	}
 
 	public function resetNextTick():void {
-		_nextTickAt += _tick;
+		_nextTickAt += _interval;
 	}
 
-	public function contains(tick:int, callback:Function):Boolean {
-		return _tick == tick && _callback == callback;
+	public function contains(interval:int, callback:Function):Boolean {
+		return _interval == interval && _callback == callback;
 	}
 }

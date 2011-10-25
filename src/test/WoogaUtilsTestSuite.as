@@ -3,7 +3,7 @@ package {
 	import net.wooga.utils.game.ZoomTest;
 	import net.wooga.utils.interfaces.Array2DIteratorTest;
 	import net.wooga.utils.sound.SoundServiceTest;
-	import net.wooga.utils.ticker.TimeServiceTest;
+	import net.wooga.utils.ticker.TimeTest;
 	import net.wooga.utils.ticker.TimeTickerTest;
 	import net.wooga.utils.types.Array2DTest;
 	import net.wooga.utils.types.NumbersTest;
@@ -21,7 +21,7 @@ package {
 		public var stringsTest:StringsTest;
 		public var soundServiceTest:SoundServiceTest;
 		public var timelineControllerTest:TimelineControllerTest;
-		public var timeServiceTest:TimeServiceTest;
+		public var timeServiceTest:TimeTest;
 		public var timeTickerTest:TimeTickerTest;
 		public var zoomTest:ZoomTest;
 	}
