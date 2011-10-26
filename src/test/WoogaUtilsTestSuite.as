@@ -1,4 +1,5 @@
 package {
+	import net.wooga.utils.display.FlashClipPlayerTest;
 	import net.wooga.utils.display.TimelineControllerTest;
 	import net.wooga.utils.game.ZoomTest;
 	import net.wooga.utils.interfaces.Array2DIteratorTest;
@@ -7,7 +8,6 @@ package {
 	import net.wooga.utils.ticker.TimeTickerTest;
 	import net.wooga.utils.types.Array2DTest;
 	import net.wooga.utils.types.NumbersTest;
-	import net.wooga.utils.types.Objects;
 	import net.wooga.utils.types.ObjectsTest;
 	import net.wooga.utils.types.StringsTest;
 
@@ -16,6 +16,7 @@ package {
 	public class WoogaUtilsTestSuite {
 		public var array2DTest:Array2DTest;
 		public var array2DIteratorTest:Array2DIteratorTest;
+		public var flashClipPlayerTest:FlashClipPlayerTest;
 		public var numbersTest:NumbersTest;
 		public var objectsTest:ObjectsTest;
 		public var stringsTest:StringsTest;

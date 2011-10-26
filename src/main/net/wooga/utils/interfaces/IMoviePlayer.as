@@ -3,5 +3,7 @@ package net.wooga.utils.interfaces {
 		function set frame(value:int):void;
 		function get totalFrames():int;
 		function get currentFrame():int;
+
+		function play(step:Number):void;
 	}
 }

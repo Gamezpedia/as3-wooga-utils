@@ -3,25 +3,30 @@ package net.wooga.utils.display {
 
 	public class TimelineController {
 		private var _callbacks:Dictionary = new Dictionary();
-		private var _totalRepeats:int = 1;
-		private var _repeatsLeft:int = 1;
+		private var _loops:int = 1;
+		private var _loop:int = 0;
 		private var _frameOverhead:Number = 0;
 		private var _totalFrames:int;
 		private var _currentFrame:int;
 		private var _setFrameHandler:Function;
 
-		public function initPlayerData(totalFrames:int, currentFrame:int = 0):void {
+		public function init(handler:Function, totalFrames:int, currentFrame:int = 0):void {
+			_setFrameHandler = handler;
 			_frameOverhead = 0;
 			_totalFrames = totalFrames;
 			_currentFrame = currentFrame;
+
+			handleCallback();
+			callFrameHandler();
 		}
 
-		public function set repeats(value:int):void {
-			_totalRepeats = _repeatsLeft = value;
+		public function set loops(value:int):void {
+			_loops = value;
+			_loop = 0;
 		}
 
-		public function get repeats():int {
-			return _totalRepeats;
+		public function get loops():int {
+			return _loops;
 		}
 
 		public function get totalFrames():int {
@@ -46,19 +51,19 @@ package net.wooga.utils.display {
 			_callbacks = new Dictionary();
 		}
 
-		public function play(step:Number = 1.0):void {
-			if (_repeatsLeft && step > 0) {
+		public function play(step:Number):void {
+			if (isLooping) {
 				var frameSteps:int = calcFrameSteps(step);
 				handleFrameSteps(frameSteps);
 
-				if (_setFrameHandler != null) {
-					_setFrameHandler(_currentFrame);
-				}
+				callFrameHandler();
 			}
 		}
 
-		public function set onSetFrame(handler:Function):void {
-			_setFrameHandler = handler;
+		private function callFrameHandler():void {
+			if (_setFrameHandler != null) {
+				_setFrameHandler(_currentFrame);
+			}
 		}
 
 		private function calcFrameSteps(step:Number):int {
@@ -75,23 +80,36 @@ package net.wooga.utils.display {
 
 		private function handleFrameSteps(frameSteps:int):void {
 			while (frameSteps--) {
-				if (_repeatsLeft) {
-					updateCurrentFrame();
+				if (isLooping && updateCurrentFrame()) {
 					handleCallback();
 				} else {
-					frameSteps = 0;
+					break;
 				}
 			}
+
+			/*_currentFrame += frameSteps;
+			_currentFrame %= _totalFrames;
+			handleCallback();*/
 		}
 
-		private function updateCurrentFrame():void {
-			++_currentFrame;
+		private function updateCurrentFrame():Boolean {
+			if (_currentFrame != _totalFrames - 1) {
+				++_currentFrame;
+			} else if (isLooping) {
+				++_loop;
 
-			if (_currentFrame >= _totalFrames) {
-				--_repeatsLeft;
-				_currentFrame %= _totalFrames;
-				_currentFrame ||= _totalFrames;
+				if (isLooping) {
+					_currentFrame = 0;
+				}
+			} else {
+				return false;
 			}
+
+			return true;
+		}
+
+		private function get isLooping():Boolean {
+			return _loop < _loops;
 		}
 
 		private function handleCallback():void {

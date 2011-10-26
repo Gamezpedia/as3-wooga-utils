@@ -21,8 +21,8 @@ package net.wooga.utils.ticker {
 			}
 		}
 
-		public function removeCallback(tick:int, callback:Function):void {
-			var ticker:ITicker = getTicker(tick, callback);
+		public function removeCallback(interval:int, callback:Function):void {
+			var ticker:ITicker = getTicker(interval, callback);
 			removeTicker(ticker);
 		}
 
