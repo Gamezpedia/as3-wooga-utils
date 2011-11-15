@@ -1,5 +1,6 @@
 package net.wooga.utils.types {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 
@@ -14,6 +15,10 @@ package net.wooga.utils.types {
 
 		public static function getBitmap(id:String):Bitmap {
 			return getInstance(id) as Bitmap;
+		}
+
+		public static function getBitmapData(id:String):BitmapData {
+			return getInstance(id) as BitmapData;
 		}
 
 		private static function getInstance(id:String):* {

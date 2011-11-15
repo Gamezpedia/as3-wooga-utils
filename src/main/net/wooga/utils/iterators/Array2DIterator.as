@@ -10,8 +10,8 @@ package net.wooga.utils.iterators {
 		private var _currentX:int = 0;
 		private var _currentY:int = 0;
 
-		public function Array2DIterator(array2D:Array2D) {
-			_items = array2D;
+		public function Array2DIterator(items:Array2D) {
+			_items = items;
 		}
 
 		public function hasNext():Boolean {

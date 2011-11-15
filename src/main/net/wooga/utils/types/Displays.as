@@ -227,27 +227,42 @@ package net.wooga.utils.types {
 		}
 
 		public static function parseTimeline(clip:MovieClip, scale:Number = 1.0, frames:Vector.<FrameDataVO> = null):Vector.<FrameDataVO> {
-			if (!frames) {
-				frames = new <FrameDataVO>[];
-			}
+			frames ||= new Vector.<FrameDataVO>();
 
 			var totalFrames:int = clip.totalFrames;
-			var frameData:FrameDataVO;
-			var rect:Rectangle;
 
 			for (var frame:int = 1; frame <= totalFrames; ++frame) {
-				frameData = getFrameData(frame, frames);
-				rect = getCurrentRect(clip, frame);
-				updateFrameData(frameData, rect, scale, clip);
+				var frameData:FrameDataVO = getFrameData(frame, frames);
+				clip.gotoAndStop(frame);
+				parseFrameData(clip, scale, frameData);
 			}
 
 			return frames;
 		}
 
-		private static function getCurrentRect(clip:MovieClip, frame:int):Rectangle {
-			clip.gotoAndStop(frame);
+		public static function parseFrameData(clip:DisplayObject, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
+			var rect:Rectangle = clip.getRect(clip);
+			frameData ||= new FrameDataVO();
+			frameData.bitmapData = drawBitmap(rect, scale, clip);
+			frameData.offsetX = rect.x;
+			frameData.offsetY = rect.y;
+			frameData.scale = scale;
 
-			return clip.getRect(clip);
+			return frameData;
+		}
+
+		public static function parseBitmapContainer(clip:DisplayObjectContainer, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
+			trace(clip.getChildAt(0));
+
+			var bitmap:Bitmap = clip.getChildAt(0) as Bitmap;
+
+			frameData ||= new FrameDataVO();
+			frameData.bitmapData = bitmap.bitmapData;
+			frameData.offsetX = bitmap.x;
+			frameData.offsetY = bitmap.y;
+			frameData.scale = scale;
+
+			return frameData;
 		}
 
 		private static function getFrameData(frame:int, frames:Vector.<FrameDataVO>):FrameDataVO {
@@ -263,14 +278,7 @@ package net.wooga.utils.types {
 			return frameData;
 		}
 
-		private static function updateFrameData(frameData:FrameDataVO, rect:Rectangle, scale:Number, clip:MovieClip):void {
-			frameData.bitmapData = drawBitmap(rect, scale, clip);
-			frameData.offsetX = rect.x;
-			frameData.offsetY = rect.y;
-			frameData.scale = scale;
-		}
-
-		private static function drawBitmap(rect:Rectangle, scale:Number, clip:MovieClip):BitmapData {
+		private static function drawBitmap(rect:Rectangle, scale:Number, clip:DisplayObject):BitmapData {
 			var matrix:Matrix = new Matrix();
 			matrix.tx = -rect.x;
 			matrix.ty = -rect.y;
