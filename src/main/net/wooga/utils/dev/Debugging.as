@@ -8,7 +8,7 @@ package net.wooga.utils.dev {
 	import org.as3commons.logging.level.WARN;
 
 	public class Debugging {
-		private static var _owners:Array;
+		private static var _owners:Array = [];
 		private static var _breakPointHandler:Function;
 		private static var _inspectHandler:Function;
 
