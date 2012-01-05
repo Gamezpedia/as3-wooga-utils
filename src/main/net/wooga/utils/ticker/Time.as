@@ -1,6 +1,6 @@
 package net.wooga.utils.ticker {
 	public class Time {
-		private static const SECOND:int = 1000;
+		public static const SECOND:int = 1000;
 
 		private var _lastTimeStamp:Number;
 		private var _currentTimeStamp:Number;

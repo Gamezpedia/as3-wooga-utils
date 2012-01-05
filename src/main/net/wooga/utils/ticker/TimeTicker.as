@@ -1,8 +1,8 @@
 package net.wooga.utils.ticker {
 	public class TimeTicker extends AbstractTicker {
-		override protected function handleTickers(time:Number):void {
-			var ticker:ITicker = getFirstTicker();
-			var nextTicker:ITicker;
+		override protected function handleTicks(time:Number):void {
+			var ticker:ITick = getFirstTicker();
+			var nextTicker:ITick;
 			var tickCount:int = 0;
 
 			while (ticker.nextTickAt <= time) {
@@ -13,29 +13,29 @@ package net.wooga.utils.ticker {
 				nextTicker = getFirstTicker();
 
 				if (ticker != nextTicker) {
-					executeTicker(ticker, tickCount);
+					executeTick(ticker, tickCount);
 					tickCount = 0;
 					ticker = nextTicker;
 				}
 			}
 
 			if (tickCount) {
-				executeTicker(ticker, tickCount);
+				executeTick(ticker, tickCount);
 			}
 		}
 
-		override protected function addTicker(ticker:ITicker):void {
-			super.addTicker(ticker);
+		override public function addTick(ticker:ITick):void {
+			super.addTick(ticker);
 
 			updateSorting();
 		}
 
 		private function updateSorting():void {
-			_tickers.sortOn("nextTickAt");
+			_ticks.sortOn("nextTickAt");
 		}
 
-		private function getFirstTicker():ITicker {
-			return _tickers[0] as ITicker;
+		private function getFirstTicker():ITick {
+			return _ticks[0] as ITick;
 		}
 	}
 }
