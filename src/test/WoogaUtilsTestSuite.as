@@ -7,6 +7,7 @@ package {
 	import net.wooga.utils.ticker.TimeTest;
 	import net.wooga.utils.ticker.TimeTickerTest;
 	import net.wooga.utils.types.Array2DTest;
+	import net.wooga.utils.types.ClassesTest;
 	import net.wooga.utils.types.NumbersTest;
 	import net.wooga.utils.types.ObjectsTest;
 	import net.wooga.utils.types.StringsTest;
@@ -25,5 +26,6 @@ package {
 		public var timeServiceTest:TimeTest;
 		public var timeTickerTest:TimeTickerTest;
 		public var zoomTest:ZoomTest;
+		public var classesTest:ClassesTest;
 	}
 }

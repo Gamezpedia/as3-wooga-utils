@@ -1,4 +1,7 @@
 package net.wooga.utils.types {
+	import flash.utils.describeType;
+	import flash.utils.getQualifiedClassName;
+
 	import org.as3commons.lang.ClassUtils;
 
 	public class Classes {
@@ -10,6 +13,16 @@ package net.wooga.utils.types {
 
 		public static function getConstantPrefix(classObject:Class):String {
 			return ClassUtils.getFullyQualifiedName(classObject) + ".";
+		}
+
+
+
+		public static function isClassOfType(CheckedClass:Class, Type:Class):Boolean {
+			var typeName:String = getQualifiedClassName(Type);
+			var isDisplayObject:Boolean = describeType(CheckedClass).factory.*.(name() == "extendsClass" || name() == "implementsInterface").(@type == typeName).length() > 0;
+
+			return isDisplayObject;
+//			return (new CheckedClass() is Type);
 		}
 	}
 }
