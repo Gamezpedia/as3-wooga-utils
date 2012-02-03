@@ -10,6 +10,8 @@ package net.wooga.utils.events {
 
 			_id = id;
 			_info = info;
+
+			//l(this.toString());
 		}
 
 		public function get id():String {
