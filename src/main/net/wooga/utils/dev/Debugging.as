@@ -41,7 +41,7 @@ package net.wooga.utils.dev {
 		}
 
 		public static function log(message:*, params:Array = null, owner:Object = "", level:int = DEBUG):void {
-			if (hasOwner(owner)) {
+			if (hasOwner(owner) || hasOwner("*")) {
 				var logger:ILogger = getLogger(owner);
 
 				if (level <= FATAL && logger.fatalEnabled) {
