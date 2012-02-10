@@ -6,12 +6,10 @@ package net.wooga.utils.events {
 		private var _info:*;
 
 		public function InfoEvent(type:String = "", id:String = null, info:* = null, bubbles:Boolean = false, cancelable:Boolean = false) {
-			super(type, bubbles, cancelable);
+			super(type || "", bubbles, cancelable);
 
 			_id = id;
 			_info = info;
-
-			//l(this.toString());
 		}
 
 		public function get id():String {
@@ -23,7 +21,7 @@ package net.wooga.utils.events {
 		}
 
 		override public function clone():Event {
-			return new InfoEvent(type, _id, _info, bubbles, cancelable);
+			return new InfoEvent(type, _id, _info);
 		}
 
 		override public function toString():String {
