@@ -5,11 +5,9 @@ package net.wooga.utils.display {
 	public class BitmapImage extends Sprite {
 		private var _bitmap:Bitmap = new Bitmap();
 
-		public function BitmapImage(data:FrameDataVO) {
+		public function BitmapImage() {
 			_bitmap.name = "content";
 			addChild(_bitmap);
-
-			setBitmap(data);
 		}
 
 		public function get bitmap():Bitmap {

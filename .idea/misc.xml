@@ -39,6 +39,7 @@
     <breakpoint_rules />
     <ui_properties />
   </component>
+  <component name="IdProvider" IDEtalkID="9F3D8297BBBDD907C111F91141665330" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -161,5 +162,6 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
 
