@@ -279,13 +279,19 @@ package net.wooga.utils.types {
 		}
 
 		private static function drawBitmap(rect:Rectangle, scale:Number, clip:DisplayObject):BitmapData {
-			var matrix:Matrix = new Matrix();
-			matrix.tx = -rect.x;
-			matrix.ty = -rect.y;
-			matrix.scale(scale, scale);
+			var width:int = rect.width * scale;
+			var height:int = rect.height * scale;
+			var bitmapData:BitmapData;
 
-			var bitmapData:BitmapData = new BitmapData(rect.width * scale, rect.height * scale, true, 0xFF);
-			bitmapData.draw(clip, matrix);
+			if (width && height) {
+				var matrix:Matrix = new Matrix();
+				matrix.tx = -rect.x;
+				matrix.ty = -rect.y;
+				matrix.scale(scale, scale);
+
+				bitmapData = new BitmapData(width, height, true, 0xFF);
+				bitmapData.draw(clip, matrix);
+			}
 
 			return bitmapData;
 		}

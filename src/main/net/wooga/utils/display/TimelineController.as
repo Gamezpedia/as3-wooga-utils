@@ -1,7 +1,9 @@
 package net.wooga.utils.display {
 	import flash.utils.Dictionary;
 
-	public class TimelineController {
+	import net.wooga.utils.interfaces.IAnimation;
+
+	public class TimelineController implements IAnimation {
 		private var _callbacks:Dictionary = new Dictionary();
 		private var _loops:int = 1;
 		private var _loop:int = 0;
@@ -9,10 +11,11 @@ package net.wooga.utils.display {
 		private var _totalFrames:int;
 		private var _currentFrame:int;
 		private var _setFrameHandler:Function;
+		private var _finishedHandler:Function;
 
-		public function init(handler:Function, totalFrames:int, currentFrame:int = 0):void {
-			_setFrameHandler = handler;
+		public function init(frameHandler:Function, totalFrames:int, currentFrame:int = 0):void {
 			_frameOverhead = 0;
+			_setFrameHandler = frameHandler;
 			_totalFrames = totalFrames;
 			_currentFrame = currentFrame;
 
@@ -51,12 +54,15 @@ package net.wooga.utils.display {
 			_callbacks = new Dictionary();
 		}
 
-		public function play(step:Number):void {
+		public function play(steps:Number = 1.0):void {
 			if (isLooping) {
-				var frameSteps:int = calcFrameSteps(step);
+				var frameSteps:int = calcFrameSteps(steps);
 				handleFrameSteps(frameSteps);
 
 				callFrameHandler();
+			} else {
+				l("finished");
+				_finishedHandler(this);
 			}
 		}
 
@@ -122,6 +128,10 @@ package net.wooga.utils.display {
 
 		private function getCallbacks(frame:int):Dictionary {
 			return _callbacks[frame] as Dictionary;
+		}
+
+		public function set finishedHandler(value:Function):void {
+			_finishedHandler = value;
 		}
 	}
 }
