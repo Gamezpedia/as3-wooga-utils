@@ -1,12 +1,18 @@
 package net.wooga.utils.types {
+	import flash.system.ApplicationDomain;
 	import flash.utils.describeType;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 
 	import org.as3commons.lang.ClassUtils;
 
 	public class Classes {
 		public static function getClass(id:String):Class {
-			var classObject:Class = ClassUtils.forName(id);
+			var classObject:Class;
+
+			if (ApplicationDomain.currentDomain.hasDefinition(id)) {
+				classObject = getDefinitionByName(id) as Class;
+			}
 
 			return classObject;
 		}
