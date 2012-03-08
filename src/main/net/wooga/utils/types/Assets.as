@@ -5,6 +5,10 @@ package net.wooga.utils.types {
 	import flash.display.Sprite;
 
 	public class Assets {
+		public static function getClass(id:String):Class {
+			return Classes.getClass(id);
+		}
+
 		public static function getMovieClip(id:String):MovieClip {
 			return getInstance(id) as MovieClip;
 		}

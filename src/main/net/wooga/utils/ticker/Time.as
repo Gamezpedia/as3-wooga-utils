@@ -2,6 +2,8 @@ package net.wooga.utils.ticker {
 	public class Time {
 		public static const SECOND:int = 1000;
 
+		private static const FPS_MEASURE_COUNT:int = 100;
+
 		private var _lastTimeStamp:Number;
 		private var _currentTimeStamp:Number;
 
@@ -12,6 +14,8 @@ package net.wooga.utils.ticker {
 		private var _currentTime:Number = 0;
 		private var _frameRateFactor:Number = 0;
 		private var _currentFrameRate:Number = 0;
+		private var _averageFrameRate:Number = 0;
+		private var _lastFrameRates:Array = [];
 
 		public function init(startTime:Number, timeStamp:int, targetFrameRate:int = 30, maxFrameCount:int = 20):void {
 			_targetFrameRate = targetFrameRate;
@@ -43,6 +47,10 @@ package net.wooga.utils.ticker {
 			return _currentFrameRate;
 		}
 
+		public function get averageFrameRate():Number {
+			return _averageFrameRate;
+		}
+
 		public function get targetFrameRate():Number {
 			return _targetFrameRate;
 		}
@@ -61,6 +69,24 @@ package net.wooga.utils.ticker {
 
 			_currentFrameRate = calcCurrentFrameRate();
 			_frameRateFactor = _targetFrameRate / _currentFrameRate;
+
+			calcAverageFrameRate();
+		}
+
+		private function calcAverageFrameRate():void {
+			_lastFrameRates.push(_currentFrameRate);
+
+			if (_lastFrameRates.length > FPS_MEASURE_COUNT) {
+				_lastFrameRates.shift();
+			}
+
+			var sum:Number = 0;
+
+			for each (var fps:Number in _lastFrameRates) {
+				sum += fps;
+			}
+
+			_averageFrameRate = sum / _lastFrameRates.length;
 		}
 
 		private function updateLastFrameRates(timeStep:Number):void {
