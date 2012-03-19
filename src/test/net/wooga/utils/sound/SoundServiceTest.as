@@ -71,8 +71,8 @@ package net.wooga.utils.sound {
 			assertEquals(channel.soundTransform.volume, 1);
 
 			var volume:Number = 0.5;
-			_sounds.volume = volume;
-			assertEquals(_sounds.volume, volume);
+			_sounds.setVolume(volume);
+			assertEquals(_sounds.getVolume(), volume);
 			assertEquals(channel.soundTransform.volume, volume);
 		}
 
@@ -80,8 +80,8 @@ package net.wooga.utils.sound {
 		public function should_mute_volume():void {
 			var channel:SoundChannel = createChannel();
 			assertEquals(channel.soundTransform.volume, 1);
-			_sounds.muted = true;
-			assertTrue(_sounds.muted);
+			_sounds.setMuted(true);
+			assertTrue(_sounds.isMuted());
 			assertEquals(channel.soundTransform.volume, 0);
 		}
 
