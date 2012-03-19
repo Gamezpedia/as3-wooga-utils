@@ -10,8 +10,6 @@ package net.wooga.utils.ticker {
 
 		function get executeAtOnce():Boolean
 
-		function setStartTime(startTime:Number):void;
-
 		function execute(tickCount:Number):void;
 
 		function resetNextTick():void;

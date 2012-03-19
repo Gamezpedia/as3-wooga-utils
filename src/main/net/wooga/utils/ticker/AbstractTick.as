@@ -10,22 +10,24 @@ package net.wooga.utils.ticker {
 		private var _executeAtOnce:Boolean;
 		private var _delay:int;
 
-		public function AbstractTick(interval:int, repeats:int, executeAtOnce:Boolean, delay:int) {
+		public function AbstractTick(interval:int, repeats:int, executeAtOnce:Boolean, delay:Number = 0) {
 			_interval = interval;
 			_repeats = repeats;
 			_executeAtOnce = executeAtOnce;
-			_delay = delay;
+			//_delay = delay;
 
-			setStartTime(0);
+			_nextTickAt = delay + _interval;
+
+			//setStartTime(0);
 		}
 
 		public function get id():String {
 			return _id;
 		}
 
-		public function setStartTime(startTime:Number):void {
+		/*public function setStartTime(startTime:Number):void {
 			_nextTickAt = startTime + _interval + _delay;
-		}
+		}*/
 
 		public function get repeats():Number {
 			return _repeats;
