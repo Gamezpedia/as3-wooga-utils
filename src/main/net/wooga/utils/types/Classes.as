@@ -32,7 +32,6 @@ package net.wooga.utils.types {
 			var isDisplayObject:Boolean = describeType(CheckedClass).factory.*.(name() == "extendsClass" || name() == "implementsInterface").(@type == typeName).length() > 0;
 
 			return isDisplayObject;
-			//			return (new CheckedClass() is Type);
 		}
 	}
 }

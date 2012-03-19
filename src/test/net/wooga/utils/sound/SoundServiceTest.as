@@ -65,7 +65,7 @@ package net.wooga.utils.sound {
 			assertEquals(soundTotalTime, totalTime);
 		}
 
-		[Test]
+		/*[Test]
 		public function should_update_volume():void {
 			var channel:SoundChannel = createChannel();
 			assertEquals(channel.soundTransform.volume, 1);
@@ -83,7 +83,7 @@ package net.wooga.utils.sound {
 			_sounds.setMuted(true);
 			assertTrue(_sounds.isMuted());
 			assertEquals(channel.soundTransform.volume, 0);
-		}
+		}*/
 
 		private function createChannel():SoundChannel {
 			given(sound.play(any(), any(), any())).willReturn(soundChannel);

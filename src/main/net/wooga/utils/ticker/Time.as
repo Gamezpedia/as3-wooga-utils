@@ -15,6 +15,7 @@ package net.wooga.utils.ticker {
 		private var _frameRateFactor:Number = 0;
 		private var _currentFrameRate:Number = 0;
 		private var _averageFrameRate:Number = 0;
+		private var _lastFrameTime:Number = 0;
 		private var _lastFrameRates:Array = [];
 
 		public function init(startTime:Number, timeStamp:int, targetFrameRate:int = 30, maxFrameCount:int = 20):void {
@@ -59,13 +60,17 @@ package net.wooga.utils.ticker {
 			_targetFrameRate = value;
 		}
 
+		public function get lastFrameTime():Number {
+			return _lastFrameTime;
+		}
+
 		public function update(timeStamp:int):void {
 			_lastTimeStamp = _currentTimeStamp;
 			_currentTimeStamp = timeStamp;
 
-			var timeStep:Number = (_currentTimeStamp - _lastTimeStamp) * _timeConstant;
-			_currentTime += timeStep;
-			updateLastFrameRates(timeStep);
+			_lastFrameTime = (_currentTimeStamp - _lastTimeStamp) * _timeConstant;
+			_currentTime += _lastFrameTime;
+			updateLastFrameRates();
 
 			_currentFrameRate = calcCurrentFrameRate();
 			_frameRateFactor = _targetFrameRate / _currentFrameRate;
@@ -89,8 +94,8 @@ package net.wooga.utils.ticker {
 			_averageFrameRate = sum / _lastFrameRates.length;
 		}
 
-		private function updateLastFrameRates(timeStep:Number):void {
-			_lastFrameTimes.push(timeStep);
+		private function updateLastFrameRates():void {
+			_lastFrameTimes.push(_lastFrameTime);
 
 			if (_lastFrameTimes.length > _maxFrameCount) {
 				_lastFrameTimes.shift();
