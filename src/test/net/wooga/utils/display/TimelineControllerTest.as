@@ -64,7 +64,7 @@ package net.wooga.utils.display {
 		}
 
 		[Test]
-		public function shouldloop():void {
+		public function should_loop():void {
 			var lastFrame:int;
 
 			var callback:Function = function(frame:int):void {
@@ -88,31 +88,6 @@ package net.wooga.utils.display {
 
 			_timeline.play(4);
 			assertEquals(2, lastFrame);
-		}
-
-		[Test]
-		public function should_execute_callback():void {
-			runTimeline(0, 1, 1);
-			runTimeline(1, 1, 2);
-			runTimeline(1, 5, 2);
-			runTimeline(2, 1, 2);
-			runTimeline(2, 2, 3);
-			runTimeline(5, 2, 3);
-		}
-
-		private function runTimeline(steps:int, loops:int, expectedCalls:int):void {
-			var calls:int = 0;
-
-			var callback:Function = function(timeline:TimelineController):void {
-				calls++;
-			};
-
-			_timeline.addCallback(0, callback);
-			_timeline.init(null, 1, 0);
-			_timeline.loops = loops;
-			_timeline.play(steps);
-
-			assertEquals(expectedCalls, calls);
 		}
 	}
 }

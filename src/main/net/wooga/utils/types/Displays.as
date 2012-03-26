@@ -230,18 +230,53 @@ package net.wooga.utils.types {
 			frames ||= new Vector.<FrameDataVO>();
 
 			var totalFrames:int = clip.totalFrames;
+			var clipRect:Rectangle = getClipRectangle(clip, totalFrames);
 
 			for (var frame:int = 1; frame <= totalFrames; ++frame) {
 				var frameData:FrameDataVO = getFrameData(frame, frames);
 				clip.gotoAndStop(frame);
-				parseFrameData(clip, scale, frameData);
+				parseFrameData(clip, clipRect, scale, frameData);
 			}
 
 			return frames;
 		}
 
-		public static function parseFrameData(clip:DisplayObject, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
-			var rect:Rectangle = clip.getRect(clip);
+		private static function getClipRectangle(clip:MovieClip, totalFrames:int):Rectangle {
+			var top:Number = Number.MAX_VALUE;
+			var left:Number = Number.MAX_VALUE;
+			var bottom:Number = Number.MIN_VALUE;
+			var right:Number = Number.MIN_VALUE;
+
+			for (var i:int = 1; i <= totalFrames; ++i) {
+				clip.gotoAndStop(i);
+				var rect:Rectangle = clip.getRect(clip);
+
+				if (top > rect.top) {
+					top = rect.top;
+				}
+
+				if (bottom < rect.bottom) {
+					bottom = rect.bottom;
+				}
+
+				if (left > rect.left) {
+					left = rect.left;
+				}
+
+				if (right < rect.right) {
+					right = rect.right;
+				}
+			}
+
+			var width:Number = Math.abs(left - right);
+			var height:Number = Math.abs(top - bottom);
+
+			var resultRect:Rectangle = new Rectangle(left, top, width, height);
+
+			return resultRect;
+		}
+
+		public static function parseFrameData(clip:DisplayObject, rect:Rectangle, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
 			frameData ||= new FrameDataVO();
 			frameData.bitmapData = drawBitmap(rect, scale, clip);
 			frameData.offsetX = rect.x;
@@ -252,8 +287,6 @@ package net.wooga.utils.types {
 		}
 
 		public static function parseBitmapContainer(clip:DisplayObjectContainer, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
-			trace(clip.getChildAt(0));
-
 			var bitmap:Bitmap = clip.getChildAt(0) as Bitmap;
 
 			frameData ||= new FrameDataVO();
