@@ -18,13 +18,15 @@ package net.wooga.utils.sound {
 			return _sounds[id] as Sound;
 		}
 
-		public function playSound(id:String, groupId:String = "", loops:int = 1, volume:Number = 1.0, startTime:Number = 0, autoRemove:Boolean = true):SoundChannel {
+		//TODO (asc 20/4/12) removed volume parameter, as volume is handled by group now. How do we override group volume settings now?
+		public function playSound(id:String, groupId:String = "", loops:int = 1, startTime:Number = 0, autoRemove:Boolean = true):SoundChannel {
 			var sound:Sound = getSound(id);
 			var channel:SoundChannel;
 
 			if (sound) {
-				channel = createChannel(sound, startTime, loops, volume);
-				getGroup(groupId).add(channel, sound, autoRemove);
+				var group:ChannelGroup = getGroup(groupId);
+				channel = createChannel(sound, startTime, loops, group.muted ? 0 : group.volume);
+				group.add(channel, sound, autoRemove);
 			}
 
 			return channel;
