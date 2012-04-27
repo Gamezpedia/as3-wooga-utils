@@ -6,7 +6,7 @@ package net.wooga.utils.ticker {
 		private var _event:Event;
 		private var _dispatcher:IEventDispatcher;
 
-		public function EventTick(event:Event, dispatcher:IEventDispatcher, interval:int, repeats:int, executeAtOnce:Boolean = false, delay:int = 0) {
+		public function EventTick(event:Event, dispatcher:IEventDispatcher, interval:int, repeats:int, executeAtOnce:Boolean = false, delay:Number = 0) {
 			super(interval, repeats, executeAtOnce, delay);
 
 			_event = event;

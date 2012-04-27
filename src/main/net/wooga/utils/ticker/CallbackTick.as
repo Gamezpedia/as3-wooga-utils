@@ -2,7 +2,7 @@ package net.wooga.utils.ticker {
 	public class CallbackTick extends AbstractTick {
 		private var _callback:Function;
 
-		public function CallbackTick(callback:Function, interval:int, repeats:int, executeAtOnce:Boolean = false, delay:int = 0) {
+		public function CallbackTick(callback:Function, interval:int, repeats:int, executeAtOnce:Boolean = false, delay:Number = 0) {
 			super(interval, repeats, executeAtOnce, delay);
 
 			_callback = callback;
