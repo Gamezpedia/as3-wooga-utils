@@ -26,5 +26,10 @@ package net.wooga.utils.locales {
 
 			return text;
 		}
+
+
+		public function hasKey(key:String):Boolean {
+			return key in _textMap;
+		}
 	}
 }

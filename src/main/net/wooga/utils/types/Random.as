@@ -6,13 +6,13 @@ package net.wooga.utils.types {
 	public class Random
 	{
 		/** Current seed value */
-		private static var _seed:int = 0;
+		private static var _seed:Number = 0; //changed type to Number to prevent integer overflow (asc 24/4/12)
 
 		/**
 		 *   Get the current seed value
 		 *   @return The current seed value
 		 */
-		public static function get seed(): int
+		public static function get seed(): Number
 		{
 			return _seed;
 		}
@@ -21,7 +21,7 @@ package net.wooga.utils.types {
 		 *   Set the current seed value
 		 *   @param seed The current seed value
 		 */
-		public static function set seed(seed:int): void
+		public static function set seed(seed:Number): void
 		{
 			_seed = seed;
 		}
@@ -46,9 +46,9 @@ package net.wooga.utils.types {
 			return _seed / 233280.0;
 		}
 
-		private var _seed:int = 0;
+		private var _seed:Number = 0;
 
-		public function Random(seed:int) {
+		public function Random(seed:Number) {
 			_seed = seed;
 		}
 		
@@ -56,7 +56,7 @@ package net.wooga.utils.types {
 		 *   Get the current seed value
 		 *   @return The current seed value
 		 */
-		public function get seed(): int
+		public function get seed(): Number
 		{
 			return _seed;
 		}
@@ -65,7 +65,7 @@ package net.wooga.utils.types {
 		 *   Set the current seed value
 		 *   @param seed The current seed value
 		 */
-		public function set seed(seed:int): void
+		public function set seed(seed:Number): void
 		{
 			_seed = seed;
 		}
