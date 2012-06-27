@@ -274,22 +274,15 @@ package net.wooga.utils.types {
 
 			var width:Number = Math.abs(left - right);
 			var height:Number = Math.abs(top - bottom);
-			width = Math.max(width, 1);
-			height = Math.max(height, 1);
-			width = Math.ceil(width);
-			height = Math.ceil(height);
 
-			var resultRect:Rectangle = new Rectangle(left, top, width, height);
-
-			return resultRect;
+			return new Rectangle(left, top, width, height);
 		}
 
 		public static function parseFrameData(clip:DisplayObject, rect:Rectangle, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
 			var bitmapData:BitmapData = drawBitmap(rect, scale, clip);
 			var visRect:Rectangle = bitmapData.getColorBoundsRect(TRANSPARENT, SOLID, false);
-			var visBitmapData:BitmapData = new BitmapData(visRect.width || 1, visRect.height || 1, true, SOLID);
+			var visBitmapData:BitmapData = createBitmapData(visRect.width, visRect.height);
 			visBitmapData.copyPixels(bitmapData, visRect, DEFAULT_POINT);
-
 
 			frameData ||= new FrameDataVO();
 			frameData.bitmapData = visBitmapData;
@@ -326,8 +319,8 @@ package net.wooga.utils.types {
 		}
 
 		private static function drawBitmap(rect:Rectangle, scale:Number, clip:DisplayObject):BitmapData {
-			var width:int = Math.ceil(rect.width * scale);
-			var height:int = Math.ceil(rect.height * scale);
+			var width:Number = rect.width * scale;
+			var height:Number = rect.height * scale;
 			var bitmapData:BitmapData;
 
 			if (width && height) {
@@ -336,11 +329,18 @@ package net.wooga.utils.types {
 				matrix.ty = -rect.y;
 				matrix.scale(scale, scale);
 
-				bitmapData = new BitmapData(width, height, true, SOLID);
+				bitmapData = createBitmapData(width, height);
 				bitmapData.draw(clip, matrix);
 			}
 
 			return bitmapData;
+		}
+
+		private static function createBitmapData(width:Number, height:Number):BitmapData {
+			width = Math.ceil(width) || 1;
+			height = Math.ceil(height) || 1;
+
+			return new BitmapData(width, height, true, SOLID);
 		}
 	}
 }
