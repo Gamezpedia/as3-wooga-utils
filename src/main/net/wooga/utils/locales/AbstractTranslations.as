@@ -31,5 +31,6 @@ package net.wooga.utils.locales {
 		public function hasKey(key:String):Boolean {
 			return key in _textMap;
 		}
+
 	}
 }

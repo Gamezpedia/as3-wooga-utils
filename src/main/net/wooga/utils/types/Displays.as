@@ -12,6 +12,10 @@ package net.wooga.utils.types {
 	 * @author sascha
 	 */
 	public class Displays {
+		private static const TRANS_BLACK:uint = 0xFF000000;
+		private static const SOLID_BLACK:uint = 0x00000000;
+		private static const DEFAULT_POINT:Point = new Point(0, 0);
+
 		public static function getChild(container:DisplayObjectContainer, path:String, separator:String = "/"):DisplayObject {
 			if (!path) {
 				return container;
@@ -277,13 +281,29 @@ package net.wooga.utils.types {
 		}
 
 		public static function parseFrameData(clip:DisplayObject, rect:Rectangle, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
+			var bitmapData:BitmapData = drawBitmap(rect, scale, clip);
+			var visRect:Rectangle = bitmapData.getColorBoundsRect(TRANS_BLACK, SOLID_BLACK, false);
+			var visBitmapData:BitmapData = new BitmapData(visRect.width || 1, visRect.height || 1, true, SOLID_BLACK);
+			visBitmapData.copyPixels(bitmapData, visRect, DEFAULT_POINT);
+
+
 			frameData ||= new FrameDataVO();
-			frameData.bitmapData = drawBitmap(rect, scale, clip);
-			frameData.offsetX = rect.x;
-			frameData.offsetY = rect.y;
+			frameData.bitmapData = bitmapData;
+			frameData.offsetX = rect.x + visRect.x;
+			frameData.offsetY = rect.y + visRect.y;
 			frameData.scale = scale;
 
 			return frameData;
+
+
+			/*helperBitmapData.draw( movieClip, matrix );
+			    graphicRectangle = helperBitmapData.getColorBoundsRect( 0xFF000000, 0x00000000, false );
+			    
+			    graphicWidth = graphicRectangle.width == 0 ? 1 : graphicRectangle.width;
+			    graphicHeight = graphicRectangle.height == 0 ? 1 : graphicRectangle.height;
+			    
+			    bitmapData = new PositionedBitmapData( graphicWidth, graphicHeight, true, 0x00000000 );
+			    bitmapData.copyPixels( helperBitmapData, graphicRectangle, defaultPoint );*/
 		}
 
 		public static function parseBitmapContainer(clip:DisplayObjectContainer, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
@@ -322,7 +342,7 @@ package net.wooga.utils.types {
 				matrix.ty = -rect.y;
 				matrix.scale(scale, scale);
 
-				bitmapData = new BitmapData(width, height, true, 0xFF);
+				bitmapData = new BitmapData(width, height, true, TRANS_BLACK);
 				bitmapData.draw(clip, matrix);
 			}
 
