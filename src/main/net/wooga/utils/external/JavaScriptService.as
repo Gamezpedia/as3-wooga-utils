@@ -1,15 +1,15 @@
 package net.wooga.utils.external {
 	import flash.external.ExternalInterface;
 
-	import net.wooga.utils.interfaces.IExternalInterfaceService;
+	import net.wooga.utils.interfaces.IExternalCalls;
 
 	public class JavaScriptService {
 		private static const CALLBACK_NAME:String = "callFlash";
 
-		private var _service:IExternalInterfaceService
+		private var _handler:IExternalCalls;
 
-		public function JavaScriptService(service:IExternalInterfaceService) {
-			_service = service;
+		public function JavaScriptService(handler:IExternalCalls) {
+			_handler = handler;
 
 			if (ExternalInterface.available) {
 				ExternalInterface.addCallback(CALLBACK_NAME, callFlash);
@@ -17,7 +17,7 @@ package net.wooga.utils.external {
 		}
 
 		private function callFlash(id:String, ...args:Array):void {
-			_service.handleCall(id, args);
+			_handler.handleCall(id, args);
 		}
 
 		public function callJS(id:String, args:Array = null):* {
