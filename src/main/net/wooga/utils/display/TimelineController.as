@@ -49,7 +49,6 @@ package net.wooga.utils.display {
 				handleFrameSteps(frameSteps);
 				callFrameHandler();
 			} else {
-				l("finished");
 				_finishedHandler(this);
 			}
 		}
