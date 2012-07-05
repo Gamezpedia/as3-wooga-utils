@@ -1,5 +1,6 @@
 package net.wooga.utils.types {
 	import flash.display.*;
+	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -230,7 +231,7 @@ package net.wooga.utils.types {
 			display.y = reg.y;
 		}
 
-		public static function parseTimeline(clip:MovieClip, scale:Number = 1.0, frames:Vector.<FrameDataVO> = null):Vector.<FrameDataVO> {
+		public static function parseTimeline(clip:MovieClip, colors:Object = null, scale:Number = 1.0, frames:Vector.<FrameDataVO> = null):Vector.<FrameDataVO> {
 			frames ||= new Vector.<FrameDataVO>();
 
 			var totalFrames:int = clip.totalFrames;
@@ -239,10 +240,32 @@ package net.wooga.utils.types {
 			for (var frame:int = 1; frame <= totalFrames; ++frame) {
 				var frameData:FrameDataVO = getFrameData(frame, frames);
 				clip.gotoAndStop(frame);
+				colorizeClip(clip, colors);
 				parseFrameData(clip, clipRect, scale, frameData);
 			}
 
 			return frames;
+		}
+
+		private static function colorizeClip(clip:MovieClip, colors:Object):void {
+			for (var key:String in colors) {
+				var color:uint = uint(key);
+				var names:Array = colors[key];
+
+				for each (var name:String in names) {
+					var child:Sprite = clip.getChildByName(name) as Sprite;
+
+					if (child) {
+						var bitmask:uint = 0xFF;
+						var offset:uint = 0;
+						var colorTransform:ColorTransform = new ColorTransform();
+						colorTransform.redOffset = (color >> 16) - offset;
+						colorTransform.greenOffset = (color >> 8 & bitmask) - offset;
+						colorTransform.blueOffset = (color & bitmask & bitmask) - offset;
+						child.transform.colorTransform = colorTransform;
+					}
+				}
+			}
 		}
 
 		private static function getClipRectangle(clip:MovieClip, totalFrames:int):Rectangle {

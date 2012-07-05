@@ -8,13 +8,23 @@ package net.wooga.utils.display {
 	public class Frames {
 		private static var _frames:Dictionary = new Dictionary();
 
-		public static function getFrames(type:String):Vector.<FrameDataVO> {
-			if (!_frames[type]) {
+		public static function getFrames(type:String, colors:Object = null):Vector.<FrameDataVO> {
+			var id:String = createFrameId(type, colors);
+
+			if (!_frames[id]) {
 				var asset:MovieClip = Assets.getMovieClip(type);
-				_frames[type] = Displays.parseTimeline(asset);
+				_frames[id] = Displays.parseTimeline(asset, colors);
 			}
 
-			return _frames[type] as Vector.<FrameDataVO>;
+			return _frames[id] as Vector.<FrameDataVO>;
+		}
+
+		private static function createFrameId(type:String, colors:Object):String {
+			for (var key:String in colors) {
+				type += "_" + key;
+			}
+
+			return type;
 		}
 
 		public static function hasFrames(type:String):Boolean {
