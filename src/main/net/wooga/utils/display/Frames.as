@@ -8,7 +8,7 @@ package net.wooga.utils.display {
 	public class Frames {
 		private static var _frames:Dictionary = new Dictionary();
 
-		public static function getFrames(type:String, colors:Object = null):Vector.<FrameDataVO> {
+		public static function getFrames(type:String, colors:Dictionary = null):Vector.<FrameDataVO> {
 			var id:String = createFrameId(type, colors);
 
 			if (!_frames[id]) {
@@ -19,7 +19,7 @@ package net.wooga.utils.display {
 			return _frames[id] as Vector.<FrameDataVO>;
 		}
 
-		private static function createFrameId(type:String, colors:Object):String {
+		private static function createFrameId(type:String, colors:Dictionary):String {
 			for (var key:String in colors) {
 				type += "_" + key;
 			}

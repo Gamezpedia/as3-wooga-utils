@@ -4,6 +4,7 @@ package net.wooga.utils.types {
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 
 	import net.wooga.utils.display.FrameDataVO;
 
@@ -231,7 +232,7 @@ package net.wooga.utils.types {
 			display.y = reg.y;
 		}
 
-		public static function parseTimeline(clip:MovieClip, colors:Object = null, scale:Number = 1.0, frames:Vector.<FrameDataVO> = null):Vector.<FrameDataVO> {
+		public static function parseTimeline(clip:MovieClip, colors:Dictionary = null, scale:Number = 1.0, frames:Vector.<FrameDataVO> = null):Vector.<FrameDataVO> {
 			frames ||= new Vector.<FrameDataVO>();
 
 			var totalFrames:int = clip.totalFrames;
@@ -247,7 +248,7 @@ package net.wooga.utils.types {
 			return frames;
 		}
 
-		private static function colorizeClip(clip:MovieClip, colors:Object):void {
+		private static function colorizeClip(clip:MovieClip, colors:Dictionary):void {
 			for (var key:String in colors) {
 				var color:uint = uint(key);
 				var names:Array = colors[key];
