@@ -13,7 +13,7 @@ package net.wooga.utils.sound {
 		public function add(channel:SoundChannel, sound:Sound, autoRemove:Boolean):void {
 			_channels[channel] = sound;
 
-			if (autoRemove) {
+			if (autoRemove && channel) {
 				channel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
 			}
 		}
