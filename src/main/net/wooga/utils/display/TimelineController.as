@@ -8,6 +8,7 @@ package net.wooga.utils.display {
 		private var _totalFrames:int;
 		private var _currentFrame:int;
 		private var _setFrameHandler:Function;
+		private var _onFinished:Function;
 		private var _finishedHandler:Function;
 
 		public function init(frameHandler:Function, totalFrames:int, currentFrame:int = 0):void {
@@ -49,7 +50,7 @@ package net.wooga.utils.display {
 				handleFrameSteps(frameSteps);
 				callFrameHandler();
 			} else {
-				_finishedHandler(this);
+				_onFinished(this);
 			}
 		}
 
@@ -80,8 +81,16 @@ package net.wooga.utils.display {
 			return true;
 		}
 
+		public function set onFinished(value:Function):void {
+			_onFinished = value;
+		}
+
 		public function set finishedHandler(value:Function):void {
 			_finishedHandler = value;
+		}
+
+		public function get finishedHandler():Function {
+			return _finishedHandler;
 		}
 	}
 }

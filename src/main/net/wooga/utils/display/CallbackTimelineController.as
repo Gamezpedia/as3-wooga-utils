@@ -3,7 +3,7 @@ package net.wooga.utils.display {
 
 	import net.wooga.utils.interfaces.IAnimation;
 
-	public class CallbackTimelineController implements IAnimation {
+	public class CallbackTimelineController {
 		private var _callbacks:Dictionary = new Dictionary();
 		private var _loops:int = 1;
 		private var _loop:int = 0;
