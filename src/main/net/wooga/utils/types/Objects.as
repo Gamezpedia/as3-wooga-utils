@@ -7,5 +7,9 @@ package net.wooga.utils.types {
 
 			return into;
 		}
+
+		public static function copy(data:Object):Object {
+			return merge({}, data);
+		}
 	}
 }

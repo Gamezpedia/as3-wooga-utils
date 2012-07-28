@@ -6,6 +6,27 @@ package net.wooga.utils.types {
 		public static const DAY:int = 24 * HOUR;
 		public static const WEEKS:int = 7 * DAY;
 
+		public static function initMilliSeconds(value:Number):TimeUnit {
+			var unit:TimeUnit = new TimeUnit();
+			unit.milliSeconds = value;
+
+			return unit;
+		}
+
+		public static function initSeconds(value:Number):TimeUnit {
+			var unit:TimeUnit = new TimeUnit();
+			unit.seconds = value;
+
+			return unit;
+		}
+
+		public static function initMinutes(value:Number):TimeUnit {
+			var unit:TimeUnit = new TimeUnit();
+			unit.minutes = value;
+
+			return unit;
+		}
+
 		private var _milliSeconds:Number = 0;
 		private var _seconds:Number = 0;
 		private var _minutes:Number = 0;

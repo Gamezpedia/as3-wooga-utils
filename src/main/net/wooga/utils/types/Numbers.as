@@ -1,7 +1,12 @@
 package net.wooga.utils.types {
+	import flash.geom.Point;
+	import flash.utils.Dictionary;
+
 	public class Numbers {
 		private static const RAD_TO_DEG:Number = 180 / Math.PI;
 		private static const DEG_TO_RAD:Number = Math.PI / 180;
+
+		private static var _dirMap:Dictionary = new Dictionary();
 
 		public static function convertRadToDegree(rad:Number):Number {
 			return rad * RAD_TO_DEG;
@@ -87,6 +92,45 @@ package net.wooga.utils.types {
 		public static function roundDecimal(num:Number, precision:int):Number {
 			var decimal:Number = Math.pow(10, precision);
 			return Math.round(decimal * num) / decimal;
+		}
+
+		public static function calcDirection(delta:Point, dirs:int):int {
+			var dir:int = 0;
+
+			if (delta.length) {
+				var rad:Number = Math.atan2(delta.y, delta.x);
+				var deg:Number = Numbers.convertRadToDegree(rad) + 450;
+				deg %= 360;
+
+				var dirList:Array = _dirMap[dirs] ||= createDirLimits(dirs);
+				var count:int = dirList.length;
+
+				for (var i:int = 0; i < count; ++i) {
+					var limit:Number = dirList[i];
+
+					if (deg < limit) {
+						dir = i + 1;
+						break;
+					}
+				}
+			}
+
+			return dir;
+		}
+
+		private static function createDirLimits(num:int):Array {
+			var dirs:Array = [];
+			var step:Number = 360 / num;
+			var limit:Number = step * -0.5;
+
+			for (var i:int = 0; i < num; ++i) {
+				limit += step;
+				dirs.push(limit);
+			}
+
+			l(dirs);
+
+			return dirs;
 		}
 	}
 }
