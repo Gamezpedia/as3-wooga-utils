@@ -128,8 +128,6 @@ package net.wooga.utils.types {
 				dirs.push(limit);
 			}
 
-			l(dirs);
-
 			return dirs;
 		}
 	}
