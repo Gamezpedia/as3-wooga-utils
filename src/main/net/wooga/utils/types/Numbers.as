@@ -109,10 +109,12 @@ package net.wooga.utils.types {
 					var limit:Number = dirList[i];
 
 					if (deg < limit) {
-						dir = i + 1;
+						dir = i;
 						break;
 					}
 				}
+
+				++dir;
 			}
 
 			return dir;
