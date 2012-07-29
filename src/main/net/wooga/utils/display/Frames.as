@@ -98,12 +98,12 @@ package net.wooga.utils.display {
 				var child:Sprite = clip.getChildAt(i) as Sprite;
 
 				if (child && colors[child.name] != null) {
-					colorizeChild(colors[child.name], child);
+					colorize(child, colors[child.name]);
 				}
 			}
 		}
 
-		private static function colorizeChild(color:uint, child:Sprite):void {
+		public static function colorize(child:DisplayObject, color:uint):void {
 			var bitmask:uint = 0xFF;
 			var offset:uint = 0;
 			var colorTransform:ColorTransform = new ColorTransform();
