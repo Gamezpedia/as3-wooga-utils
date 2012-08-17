@@ -4,19 +4,15 @@ package net.wooga.utils.display {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
 	import net.wooga.utils.types.Assets;
+	import net.wooga.utils.types.Bitmaps;
 
 	public class Frames {
 		private static var _savedFrames:int = 0;
 		private static var _createdFrames:int = 0;
-		private static const TRANSPARENT:uint = 0xFF000000;
-		private static const SOLID:uint = 0x00000000;
-		private static const DEFAULT_POINT:Point = new Point(0, 0);
 
 		private static var _frames:Dictionary = new Dictionary();
 
@@ -31,6 +27,12 @@ package net.wooga.utils.display {
 			return _frames[id] as Vector.<FrameDataVO>;
 		}
 
+		public static function hasFrames(type:String, colors:Dictionary = null):Boolean {
+			var id:String = createFrameId(type, colors);
+
+			return _frames[id] != null;
+		}
+
 		private static function createFrameId(type:String, colors:Dictionary):String {
 			var keys:Array = [];
 
@@ -38,14 +40,13 @@ package net.wooga.utils.display {
 				keys.push(Number(key));
 			}
 
-			keys.sort(Array.NUMERIC);
-			keys.unshift(type);
+			if (keys.length) {
+				keys.sort(Array.NUMERIC);
+				keys.unshift(type);
+				type = keys.join("_");
+			}
 
-			return keys.join("_");
-		}
-
-		public static function hasFrames(type:String):Boolean {
-			return _frames[type] != null;
+			return type;
 		}
 
 		public static function addFrames(type:String, frames:Vector.<FrameDataVO>):void {
@@ -60,23 +61,27 @@ package net.wooga.utils.display {
 			var clipRect:Rectangle = getClipRectangle(clip, totalFrames);
 
 			for (var frame:int = 1; frame <= totalFrames; ++frame) {
-				var frameData:FrameDataVO = getFrameData(frame, frames);
-				clip.gotoAndStop(frame);
-
-				if (colors) {
-					colorizeClip(clip, colors);
-				}
-
-				parseFrameData(name, clip, clipRect, scale, frameData);
-
-				if (prevFrame) {
-					compareFrameData(frameData, prevFrame);
-				}
-
-				prevFrame = frameData;
+				prevFrame = parseFrame(frame, frames, clip, colors, name, clipRect, scale, prevFrame);
 			}
 
 			return frames;
+		}
+
+		private static function parseFrame(frame:int, frames:Vector.<FrameDataVO>, clip:MovieClip, colors:Dictionary, name:String, clipRect:Rectangle, scale:Number, prevFrame:FrameDataVO):FrameDataVO {
+			var frameData:FrameDataVO = getFrameData(frame, frames);
+			clip.gotoAndStop(frame);
+
+			if (colors) {
+				colorizeClip(clip, colors);
+			}
+
+			parseFrameData(name, clip, clipRect, scale, frameData);
+
+			if (prevFrame) {
+				compareFrameData(frameData, prevFrame);
+			}
+
+			return frameData;
 		}
 
 		private static function compareFrameData(currentFrame:FrameDataVO, prevFrame:FrameDataVO):void {
@@ -147,11 +152,11 @@ package net.wooga.utils.display {
 		}
 
 		public static function parseFrameData(name:String, clip:DisplayObject, rect:Rectangle, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
-			var bitmapData:BitmapData = drawBitmap(rect, scale, clip);
+			var bitmapData:BitmapData = Bitmaps.drawBitmap(rect, scale, clip);
 
-			var visRect:Rectangle = bitmapData.getColorBoundsRect(TRANSPARENT, SOLID, false);
-			var visBitmapData:BitmapData = createBitmapData(visRect.width, visRect.height);
-			visBitmapData.copyPixels(bitmapData, visRect, DEFAULT_POINT);
+			var visRect:Rectangle = bitmapData.getColorBoundsRect(Bitmaps.TRANSPARENT, Bitmaps.SOLID, false);
+			var visBitmapData:BitmapData = Bitmaps.createBitmapData(visRect.width, visRect.height);
+			visBitmapData.copyPixels(bitmapData, visRect, Bitmaps.DEFAULT_POINT);
 
 			frameData ||= new FrameDataVO();
 			frameData.name = name;
@@ -177,29 +182,5 @@ package net.wooga.utils.display {
 			return frameData;
 		}
 
-		private static function drawBitmap(rect:Rectangle, scale:Number, clip:DisplayObject):BitmapData {
-			var width:Number = rect.width * scale;
-			var height:Number = rect.height * scale;
-			var bitmapData:BitmapData;
-
-			if (width && height) {
-				var matrix:Matrix = new Matrix();
-				matrix.tx = -rect.x;
-				matrix.ty = -rect.y;
-				matrix.scale(scale, scale);
-
-				bitmapData = createBitmapData(width, height);
-				bitmapData.draw(clip, matrix);
-			}
-
-			return bitmapData;
-		}
-
-		private static function createBitmapData(width:Number, height:Number):BitmapData {
-			width = Math.ceil(width) || 1;
-			height = Math.ceil(height) || 1;
-
-			return new BitmapData(width, height, true, SOLID);
-		}
 	}
 }
