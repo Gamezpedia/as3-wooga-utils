@@ -25,7 +25,7 @@ package net.wooga.utils.ticker {
 			_maxFrameCount = maxFrameCount;
 			_currentTimeStamp = timeStamp;
 			_lastTimeStamp = _currentTimeStamp - SECOND / _targetFrameRate;
-			_currentTime = startTime + _currentTimeStamp;
+			_currentTime = startTime;
 		}
 
 		public function set timeConstant(value:Number):void {
