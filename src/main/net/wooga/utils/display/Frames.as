@@ -153,8 +153,7 @@ package net.wooga.utils.display {
 
 		public static function parseFrameData(name:String, clip:DisplayObject, rect:Rectangle, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
 			var bitmapData:BitmapData = Bitmaps.drawBitmap(rect, scale, clip);
-
-			var visRect:Rectangle = bitmapData.getColorBoundsRect(Bitmaps.TRANSPARENT, Bitmaps.SOLID, false);
+			var visRect:Rectangle = Bitmaps.getVisibleRect(bitmapData);
 			var visBitmapData:BitmapData = Bitmaps.createBitmapData(visRect.width, visRect.height);
 			visBitmapData.copyPixels(bitmapData, visRect, Bitmaps.DEFAULT_POINT);
 

@@ -35,6 +35,10 @@ package net.wooga.utils.types {
 			return new BitmapData(width, height, true, SOLID);
 		}
 
+		public static function getVisibleRect(bitmapData:BitmapData):Rectangle {
+			return bitmapData.getColorBoundsRect(Bitmaps.TRANSPARENT, Bitmaps.SOLID, false);
+		}
+
 		public static function createScreenShot(display:DisplayObject, rect:Rectangle = null, scale:Number = 1.0):BitmapData {
 			if (!rect) {
 				var corner:Point = display.globalToLocal(DEFAULT_POINT);
