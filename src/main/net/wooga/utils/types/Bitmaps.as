@@ -10,7 +10,9 @@ package net.wooga.utils.types {
 		public static const SOLID:uint = 0x00000000;
 		public static const TRANSPARENT:uint = 0xFF000000;
 
-		public static function drawBitmap(rect:Rectangle, scale:Number, clip:DisplayObject):BitmapData {
+		public static function drawBitmap(display:DisplayObject, rect:Rectangle = null, scale:Number = 1.0):BitmapData {
+			rect ||= display.getRect(display);
+
 			var width:Number = rect.width * scale;
 			var height:Number = rect.height * scale;
 			var bitmapData:BitmapData;
@@ -22,7 +24,7 @@ package net.wooga.utils.types {
 				matrix.scale(scale, scale);
 
 				bitmapData = createBitmapData(width, height);
-				bitmapData.draw(clip, matrix);
+				bitmapData.draw(display, matrix);
 			}
 
 			return bitmapData;
@@ -45,7 +47,7 @@ package net.wooga.utils.types {
 				rect = new Rectangle(corner.x, corner.y, display.stage.stageWidth, display.stage.stageHeight);
 			}
 
-			var bitmapData:BitmapData = drawBitmap(rect, scale, display);
+			var bitmapData:BitmapData = drawBitmap(display, rect, scale);
 
 			return bitmapData;
 		}
