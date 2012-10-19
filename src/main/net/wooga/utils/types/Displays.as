@@ -1,8 +1,12 @@
 package net.wooga.utils.types {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 
 	/**
 	 * helper class to make handling display objects easier
@@ -222,6 +226,28 @@ package net.wooga.utils.types {
 			var reg:Point = getRegPoint(display, xDir, yDir);
 			display.x = reg.x;
 			display.y = reg.y;
+		}
+
+		public static function colorizeClip(clip:MovieClip, colors:Dictionary):void {
+			var numChildren:int = clip.numChildren;
+
+			for (var i:int = 0; i < numChildren; ++i) {
+				var child:Sprite = clip.getChildAt(i) as Sprite;
+
+				if (child && colors[child.name] != null) {
+					colorize(child, colors[child.name]);
+				}
+			}
+		}
+
+		public static function colorize(child:DisplayObject, color:uint):void {
+			var bitmask:uint = 0xFF;
+			var offset:uint = 0;
+			var colorTransform:ColorTransform = new ColorTransform();
+			colorTransform.redOffset = (color >> 16) - offset;
+			colorTransform.greenOffset = (color >> 8 & bitmask) - offset;
+			colorTransform.blueOffset = (color & bitmask & bitmask) - offset;
+			child.transform.colorTransform = colorTransform;
 		}
 	}
 }

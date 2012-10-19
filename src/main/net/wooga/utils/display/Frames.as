@@ -2,13 +2,12 @@ package net.wooga.utils.display {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import flash.geom.ColorTransform;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 
 	import net.wooga.utils.types.Assets;
 	import net.wooga.utils.types.Bitmaps;
+	import net.wooga.utils.types.Displays;
 
 	public class Frames {
 		private static var _savedFrames:int = 0;
@@ -16,12 +15,12 @@ package net.wooga.utils.display {
 
 		private static var _frames:Dictionary = new Dictionary();
 
-		public static function getFrames(type:String, colors:Dictionary = null):Vector.<FrameDataVO> {
+		public static function getFrames(type:String, colors:Dictionary = null, scale:Number = 1.0):Vector.<FrameDataVO> {
 			var id:String = createFrameId(type, colors);
 
 			if (!_frames[id]) {
 				var asset:MovieClip = Assets.getMovieClip(type);
-				_frames[id] = parseTimeline(id, asset, colors);
+				_frames[id] = parseTimeline(id, asset, colors, scale);
 			}
 
 			return _frames[id] as Vector.<FrameDataVO>;
@@ -72,7 +71,7 @@ package net.wooga.utils.display {
 			clip.gotoAndStop(frame);
 
 			if (colors) {
-				colorizeClip(clip, colors);
+				Displays.colorizeClip(clip, colors);
 			}
 
 			parseFrameData(name, clip, clipRect, scale, frameData);
@@ -94,28 +93,6 @@ package net.wooga.utils.display {
 				//var ratio:Number = _savedFrames / _createdFrames;
 				//l(_savedFrames + " / " + _createdFrames + " = " + ratio);
 			}
-		}
-
-		private static function colorizeClip(clip:MovieClip, colors:Dictionary):void {
-			var numChildren:int = clip.numChildren;
-
-			for (var i:int = 0; i < numChildren; ++i) {
-				var child:Sprite = clip.getChildAt(i) as Sprite;
-
-				if (child && colors[child.name] != null) {
-					colorize(child, colors[child.name]);
-				}
-			}
-		}
-
-		public static function colorize(child:DisplayObject, color:uint):void {
-			var bitmask:uint = 0xFF;
-			var offset:uint = 0;
-			var colorTransform:ColorTransform = new ColorTransform();
-			colorTransform.redOffset = (color >> 16) - offset;
-			colorTransform.greenOffset = (color >> 8 & bitmask) - offset;
-			colorTransform.blueOffset = (color & bitmask & bitmask) - offset;
-			child.transform.colorTransform = colorTransform;
 		}
 
 		private static function getClipRectangle(clip:MovieClip, totalFrames:int):Rectangle {

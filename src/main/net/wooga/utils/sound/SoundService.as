@@ -1,7 +1,9 @@
 package net.wooga.utils.sound {
+	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
+	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 
 	public class SoundService {
@@ -9,6 +11,18 @@ package net.wooga.utils.sound {
 
 		private var _sounds:Dictionary = new Dictionary();
 		private var _channelGroups:Dictionary = new Dictionary();
+
+		public function loadSound(id:String, url:String):void {
+			var request:URLRequest = new URLRequest(url);
+			var sound:Sound = new Sound(request);
+			sound.addEventListener(IOErrorEvent.IO_ERROR, onError)
+
+			storeSound(id, sound);
+		}
+
+		private function onError(event:IOErrorEvent):void {
+
+		}
 
 		public function storeSound(id:String, sound:Sound):void {
 			_sounds[id] ||= sound;
