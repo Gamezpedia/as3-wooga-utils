@@ -19,8 +19,15 @@ package net.wooga.utils.types {
 
 		public static function getInstance(id:String, args:Array = null):Object {
 			var classObject:Class = getClass(id);
+			var classInstance:Object;
 
-			return ClassUtils.newInstance(classObject, args);
+			if (classObject) {
+				classInstance = ClassUtils.newInstance(classObject, args);
+			} else {
+				e("no class for " + id);
+			}
+
+			return classInstance;
 		}
 
 		public static function getConstantPrefix(classObject:Class):String {

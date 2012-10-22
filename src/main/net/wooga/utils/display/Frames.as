@@ -15,37 +15,38 @@ package net.wooga.utils.display {
 
 		private static var _frames:Dictionary = new Dictionary();
 
-		public static function getFrames(type:String, colors:Dictionary = null, scale:Number = 1.0):Vector.<FrameDataVO> {
-			var id:String = createFrameId(type, colors, scale);
+		public static function getFrames(type:String, colorMap:Dictionary = null, scale:Number = 1.0):Vector.<FrameDataVO> {
+			var id:String = createFrameId(type, colorMap, scale);
 
 			if (!_frames[id]) {
 				var asset:MovieClip = Assets.getMovieClip(type);
-				_frames[id] = parseTimeline(id, asset, colors, scale);
+				_frames[id] = parseTimeline(id, asset, colorMap, scale);
 			}
 
 			return _frames[id] as Vector.<FrameDataVO>;
 		}
 
-		public static function hasFrames(type:String, colors:Dictionary = null, scale:Number = 1.0):Boolean {
-			var id:String = createFrameId(type, colors, scale);
+		public static function hasFrames(type:String, colorMap:Dictionary = null, scale:Number = 1.0):Boolean {
+			var id:String = createFrameId(type, colorMap, scale);
 
 			return _frames[id] != null;
 		}
 
-		private static function createFrameId(type:String, colors:Dictionary, scale:Number):String {
-			var keys:Array = [];
+		private static function createFrameId(type:String, colorMap:Dictionary, scale:Number):String {
+			var colors:Array = [];
 
-			for (var key:String in colors) {
-				keys.push(Number(key));
+			for (var key:String in colorMap) {
+				var num:Number = colorMap[key];
+				colors.push(num);
 			}
 
-			if (keys.length) {
-				keys.sort(Array.NUMERIC);
+			if (colors.length) {
+				colors.sort(Array.NUMERIC);
 			}
 
-			keys.unshift(type);
-			keys.push(scale);
-			type = keys.join("_");
+			colors.unshift(type);
+			colors.push(scale);
+			type = colors.join("_");
 
 			return type;
 		}
