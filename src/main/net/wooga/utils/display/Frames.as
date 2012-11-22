@@ -35,8 +35,7 @@ package net.wooga.utils.display {
 		private static function createFrameId(type:String, colorMap:Dictionary, scale:Number):String {
 			var colors:Array = [];
 
-			for (var key:String in colorMap) {
-				var num:Number = colorMap[key];
+			for each (var num:Number in colorMap) {
 				colors.push(num);
 			}
 
@@ -57,16 +56,18 @@ package net.wooga.utils.display {
 
 		public static function parseTimeline(name:String, clip:MovieClip, colors:Dictionary = null, scale:Number = 1.0, frames:Vector.<FrameDataVO> = null):Vector.<FrameDataVO> {
 			frames ||= new Vector.<FrameDataVO>();
+			frames.reverse();
 
 			var totalFrames:int = clip.totalFrames;
 			var prevFrame:FrameDataVO;
 			var clipRect:Rectangle = getClipRectangle(clip, totalFrames);
 
-			for (var frame:int = 1; frame <= totalFrames; ++frame) {
+			//for (var frame:int = 1; frame <= totalFrames; ++frame) {
+			for (var frame:int = totalFrames; frame > 0; --frame) {
 				prevFrame = parseFrame(frame, frames, clip, colors, name, clipRect, scale, prevFrame);
 			}
 
-			return frames;
+			return frames.reverse();
 		}
 
 		private static function parseFrame(frame:int, frames:Vector.<FrameDataVO>, clip:MovieClip, colors:Dictionary, name:String, clipRect:Rectangle, scale:Number, prevFrame:FrameDataVO):FrameDataVO {
@@ -80,7 +81,7 @@ package net.wooga.utils.display {
 			parseFrameData(name, clip, clipRect, scale, frameData);
 
 			if (prevFrame) {
-				compareFrameData(frameData, prevFrame);
+				//compareFrameData(frameData, prevFrame);
 			}
 
 			return frameData;
