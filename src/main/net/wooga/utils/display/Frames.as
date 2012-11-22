@@ -132,7 +132,9 @@ package net.wooga.utils.display {
 			return new Rectangle(left, top, width, height);
 		}
 
-		public static function parseFrameData(name:String, clip:DisplayObject, rect:Rectangle, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
+		public static function parseFrameData(name:String, clip:DisplayObject, rect:Rectangle = null, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
+			rect ||= clip.getRect(clip);
+
 			var bitmapData:BitmapData = Bitmaps.drawBitmap(clip, rect, scale);
 			var visRect:Rectangle = Bitmaps.getVisibleRect(bitmapData);
 			var visBitmapData:BitmapData = Bitmaps.createBitmapData(visRect.width, visRect.height);
