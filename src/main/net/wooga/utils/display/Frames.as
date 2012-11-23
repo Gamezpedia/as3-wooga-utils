@@ -10,9 +10,6 @@ package net.wooga.utils.display {
 	import net.wooga.utils.types.Displays;
 
 	public class Frames {
-		private static var _savedFrames:int = 0;
-		private static var _createdFrames:int = 0;
-
 		private static var _frames:Dictionary = new Dictionary();
 
 		public static function getFrames(type:String, colorMap:Dictionary = null, scale:Number = 1.0):Vector.<FrameDataVO> {
@@ -91,37 +88,22 @@ package net.wooga.utils.display {
 			if (diff == 0) {
 				currentFrame.bitmapData = prevFrame.bitmapData;
 				currentFrame.usePreviousFrame = true;
-				_savedFrames++;
-				//var ratio:Number = _savedFrames / _createdFrames;
-				//l(_savedFrames + " / " + _createdFrames + " = " + ratio);
 			}
 		}
 
 		private static function getClipRectangle(clip:MovieClip, totalFrames:int):Rectangle {
 			var top:Number = Number.MAX_VALUE;
-			var left:Number = Number.MAX_VALUE;
 			var bottom:Number = Number.MIN_VALUE;
+			var left:Number = Number.MAX_VALUE;
 			var right:Number = Number.MIN_VALUE;
 
 			for (var i:int = 1; i <= totalFrames; ++i) {
 				clip.gotoAndStop(i);
 				var rect:Rectangle = clip.getRect(clip);
-
-				if (top > rect.top) {
-					top = rect.top;
-				}
-
-				if (bottom < rect.bottom) {
-					bottom = rect.bottom;
-				}
-
-				if (left > rect.left) {
-					left = rect.left;
-				}
-
-				if (right < rect.right) {
-					right = rect.right;
-				}
+				top = Math.min(top, rect.top);
+				bottom = Math.max(bottom, rect.bottom);
+				left = Math.min(left, rect.left);
+				right = Math.max(right, rect.right);
 			}
 
 			var width:Number = Math.abs(left - right);
@@ -155,7 +137,6 @@ package net.wooga.utils.display {
 				frameData = frames[frame - 1] as FrameDataVO;
 			} else {
 				frameData = new FrameDataVO();
-				_createdFrames++;
 				frames.push(frameData);
 			}
 
