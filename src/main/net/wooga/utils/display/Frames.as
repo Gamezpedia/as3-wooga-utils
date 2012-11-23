@@ -56,18 +56,16 @@ package net.wooga.utils.display {
 
 		public static function parseTimeline(name:String, clip:MovieClip, colors:Dictionary = null, scale:Number = 1.0, frames:Vector.<FrameDataVO> = null):Vector.<FrameDataVO> {
 			frames ||= new Vector.<FrameDataVO>();
-			frames.reverse();
 
 			var totalFrames:int = clip.totalFrames;
 			var prevFrame:FrameDataVO;
 			var clipRect:Rectangle = getClipRectangle(clip, totalFrames);
 
-			//for (var frame:int = 1; frame <= totalFrames; ++frame) {
-			for (var frame:int = totalFrames; frame > 0; --frame) {
+			for (var frame:int = 1; frame <= totalFrames; ++frame) {
 				prevFrame = parseFrame(frame, frames, clip, colors, name, clipRect, scale, prevFrame);
 			}
 
-			return frames.reverse();
+			return frames;
 		}
 
 		private static function parseFrame(frame:int, frames:Vector.<FrameDataVO>, clip:MovieClip, colors:Dictionary, name:String, clipRect:Rectangle, scale:Number, prevFrame:FrameDataVO):FrameDataVO {
@@ -81,7 +79,7 @@ package net.wooga.utils.display {
 			parseFrameData(name, clip, clipRect, scale, frameData);
 
 			if (prevFrame) {
-				//compareFrameData(frameData, prevFrame);
+				compareFrameData(frameData, prevFrame);
 			}
 
 			return frameData;
