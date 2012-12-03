@@ -13,7 +13,7 @@ package net.wooga.utils.logging {
 
 	public class JSConsoleTarget implements ILogTarget {
 		private var _levels:Dictionary = new Dictionary();
-		private var _service:IExternalService = new JavaScriptService();
+		private var _service:IExternalService = new JavaScriptService(null, null);
 
 		public function JSConsoleTarget() {
 			_levels[DEBUG] = "debug";
@@ -27,7 +27,7 @@ package net.wooga.utils.logging {
 			var data:Object = {};
 			data["stack"] = getCallList();
 
-			_service.call("log", [_levels[level], timeStamp, message, data]);
+			_service.call("log_from_flash", [_levels[level], timeStamp, message, data]);
 		}
 
 		private function getCallList():Array {

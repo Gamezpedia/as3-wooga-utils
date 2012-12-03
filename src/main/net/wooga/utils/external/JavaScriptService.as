@@ -8,17 +8,17 @@ package net.wooga.utils.external {
 		private var _handler:IExternalHandler;
 		private var _callbackName:String;
 
-		public function JavaScriptService(handler:IExternalHandler = null, callbackName:String = "callFlash") {
+		public function JavaScriptService(handler:IExternalHandler = null, callbackName:String = null) {
 			_handler = handler;
-			_callbackName = callbackName;
 
-			if (_callbackName && ExternalInterface.available) {
+			if (callbackName && ExternalInterface.available) {
+				_callbackName = callbackName;
 				ExternalInterface.addCallback(callbackName, callFlash);
 			}
 		}
 
 		private function callFlash(id:String, ...args:Array):void {
-			_handler.handleCall(id, args);
+			_handler && _handler.handleCall(id, args);
 		}
 
 		public function call(id:String, args:Array = null):* {
