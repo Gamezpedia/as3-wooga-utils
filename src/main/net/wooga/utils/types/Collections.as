@@ -1,10 +1,19 @@
 package net.wooga.utils.types {
+	import flash.utils.Dictionary;
+
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 
 	public class Collections {
-		public static const EMPTY_ITERATOR:IIterator = new EmptyIterator();
-		public static const EMPTY_ITERABLE:IIterable = new EmptyIterable();
+		private static var _emptyTypes:Dictionary = new Dictionary();
+
+		public static function get EMPTY_ITERATOR():IIterator {
+			return _emptyTypes[IIterator] ||= new EmptyIterator();
+		}
+
+		public static function get EMPTY_ITERABLE():IIterable {
+			return _emptyTypes[IIterable] ||= new EmptyIterable();
+		}
 	}
 }
 
