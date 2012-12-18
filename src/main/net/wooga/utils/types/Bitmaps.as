@@ -10,11 +10,11 @@ package net.wooga.utils.types {
 		public static const SOLID:uint = 0x00000000;
 		public static const TRANSPARENT:uint = 0xFF000000;
 
-		public static function drawBitmap(display:DisplayObject, rect:Rectangle = null, scale:Number = 1.0):BitmapData {
+		public static function drawBitmap(display:DisplayObject, rect:Rectangle = null, scale:Number = 1.0, transparent:Boolean = true, color:uint = SOLID):BitmapData {
 			rect ||= display.getRect(display);
 
-			var width:Number = rect.width * scale;
-			var height:Number = rect.height * scale;
+			var width:int = Math.ceil(rect.width * scale);
+			var height:int = Math.ceil(rect.height * scale);
 			var bitmapData:BitmapData;
 
 			if (width && height) {
@@ -23,18 +23,11 @@ package net.wooga.utils.types {
 				matrix.ty = -rect.y;
 				matrix.scale(scale, scale);
 
-				bitmapData = createBitmapData(width, height);
+				bitmapData = new BitmapData(width, height, transparent, color);
 				bitmapData.draw(display, matrix);
 			}
 
 			return bitmapData;
-		}
-
-		public static function createBitmapData(width:Number, height:Number):BitmapData {
-			width = Math.ceil(width) || 1;
-			height = Math.ceil(height) || 1;
-
-			return new BitmapData(width, height, true, SOLID);
 		}
 
 		public static function getVisibleRect(bitmapData:BitmapData):Rectangle {

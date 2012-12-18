@@ -117,7 +117,7 @@ package net.wooga.utils.display {
 
 			var bitmapData:BitmapData = Bitmaps.drawBitmap(clip, rect, scale);
 			var visRect:Rectangle = Bitmaps.getVisibleRect(bitmapData);
-			var visBitmapData:BitmapData = Bitmaps.createBitmapData(visRect.width, visRect.height);
+			var visBitmapData:BitmapData = new BitmapData(visRect.width || 1, visRect.height || 1, true, Bitmaps.SOLID);
 			visBitmapData.copyPixels(bitmapData, visRect, Bitmaps.DEFAULT_POINT);
 
 			frameData ||= new FrameDataVO();
