@@ -4,6 +4,7 @@ package net.wooga.utils.display {
 
 	public class BitmapImage extends Sprite {
 		private var _bitmap:Bitmap = new Bitmap();
+		private var _frameData:FrameDataVO;
 
 		public function BitmapImage() {
 			_bitmap.name = "content";
@@ -14,7 +15,12 @@ package net.wooga.utils.display {
 			return _bitmap;
 		}
 
+		public function get frameData():FrameDataVO {
+			return _frameData;
+		}
+
 		public function setBitmap(data:FrameDataVO):void {
+			_frameData = data;
 			_bitmap.bitmapData = data.bitmapData;
 			_bitmap.x = data.offsetX * data.scale;
 			_bitmap.y = data.offsetY * data.scale;
