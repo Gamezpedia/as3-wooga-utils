@@ -65,7 +65,7 @@ package net.wooga.utils.display {
 			return frames;
 		}
 
-		private static function parseFrame(frame:int, frames:Vector.<FrameDataVO>, clip:MovieClip, colors:Dictionary, name:String, clipRect:Rectangle, scale:Number, prevFrame:FrameDataVO):FrameDataVO {
+		private static function parseFrame(frame:int, frames:Vector.<FrameDataVO>, clip:MovieClip, colors:Dictionary, name:String, rect:Rectangle, scale:Number, prevFrame:FrameDataVO):FrameDataVO {
 			var frameData:FrameDataVO = getFrameData(frame, frames);
 			clip.gotoAndStop(frame);
 
@@ -73,7 +73,7 @@ package net.wooga.utils.display {
 				Displays.colorizeClip(clip, colors);
 			}
 
-			parseFrameData(name, clip, clipRect, scale, frameData);
+			parseFrameData(name, clip, rect, scale, frameData);
 
 			if (prevFrame) {
 				compareFrameData(frameData, prevFrame);
@@ -117,15 +117,17 @@ package net.wooga.utils.display {
 
 			var bitmapData:BitmapData = Bitmaps.drawBitmap(clip, rect, scale);
 			var visRect:Rectangle = Bitmaps.getVisibleRect(bitmapData);
-			var visBitmapData:BitmapData = new BitmapData(visRect.width || 1, visRect.height || 1, true, Bitmaps.SOLID);
+			visRect.width ||= 1;
+			visRect.height ||= 1;
+			var visBitmapData:BitmapData = new BitmapData(visRect.width, visRect.height, true, Bitmaps.TRANSPARENT);
 			visBitmapData.copyPixels(bitmapData, visRect, Bitmaps.DEFAULT_POINT);
 
 			frameData ||= new FrameDataVO();
 			frameData.name = name;
 			frameData.bitmapData = visBitmapData;
-			frameData.offsetX = rect.x + visRect.x;
-			frameData.offsetY = rect.y + visRect.y;
-			frameData.scale = scale;
+			frameData.regX = rect.x + visRect.x;
+			frameData.regY = rect.y + visRect.y;
+			frameData.scaleX = frameData.scaleY = scale;
 
 			return frameData;
 		}

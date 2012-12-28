@@ -22,8 +22,8 @@ package net.wooga.utils.display {
 		public function setBitmap(data:FrameDataVO):void {
 			_frameData = data;
 			_bitmap.bitmapData = data.bitmapData;
-			_bitmap.x = data.offsetX * data.scale;
-			_bitmap.y = data.offsetY * data.scale;
+			_bitmap.x = data.regX * data.scaleX;
+			_bitmap.y = data.regY * data.scaleX;
 			//_bitmap.scaleX = _bitmap.scaleY = data.scale;
 		}
 	}
