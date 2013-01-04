@@ -1,4 +1,4 @@
-package net.wooga.utils.display {
+﻿package net.wooga.utils.display {
 	import flash.display.BitmapData;
 
 	public class FrameDataVO {

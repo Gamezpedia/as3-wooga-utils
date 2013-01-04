@@ -3,7 +3,6 @@ package net.wooga.utils.types {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
@@ -240,14 +239,8 @@ package net.wooga.utils.types {
 			}
 		}
 
-		public static function colorize(child:DisplayObject, color:uint):void {
-			var bitmask:uint = 0xFF;
-			var offset:uint = 0;
-			var colorTransform:ColorTransform = new ColorTransform();
-			colorTransform.redOffset = (color >> 16) - offset;
-			colorTransform.greenOffset = (color >> 8 & bitmask) - offset;
-			colorTransform.blueOffset = (color & bitmask & bitmask) - offset;
-			child.transform.colorTransform = colorTransform;
+		public static function colorize(child:DisplayObject, color:uint, offset:uint = 0):void {
+			child.transform.colorTransform = Colors.transform(color, 1.0, offset);
 		}
 	}
 }

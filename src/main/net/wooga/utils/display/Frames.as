@@ -41,7 +41,11 @@ package net.wooga.utils.display {
 			}
 
 			colors.unshift(type);
-			colors.push(scale);
+
+			if (scale) {
+				colors.push(scale);
+			}
+
 			type = colors.join("_");
 
 			return type;
