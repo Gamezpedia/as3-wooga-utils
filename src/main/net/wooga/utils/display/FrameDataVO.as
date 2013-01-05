@@ -11,6 +11,7 @@
 		private var _scaleX:Number;
 		private var _scaleY:Number;
 		private var _usePreviousFrame:Boolean;
+		private var _isVisible:Boolean = true;
 
 		public function FrameDataVO(name:String = null, bmd:BitmapData = null, regX:Number = 0, regY:Number = 0, scaleX:Number = 1.0, scaleY:Number = 1.0) {
 			_name = name;
@@ -127,9 +128,18 @@
 			var data:FrameDataVO = new FrameDataVO(_name, _bitmapData, _regX, _regY, _scaleX, _scaleY);
 			data.offsetX = _offsetX;
 			data.offsetY = _offsetY;
+			data.isVisible = _isVisible;
 			data.usePreviousFrame = _usePreviousFrame;
 
 			return data;
+		}
+
+		public function get isVisible():Boolean {
+			return _isVisible;
+		}
+
+		public function set isVisible(value:Boolean):void {
+			_isVisible = value;
 		}
 	}
 }
