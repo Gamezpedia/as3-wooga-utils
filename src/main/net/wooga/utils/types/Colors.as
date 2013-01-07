@@ -2,15 +2,19 @@ package net.wooga.utils.types {
 	import flash.geom.ColorTransform;
 
 	public class Colors {
-		public static function transform(color:uint = 0, alpha:Number = 1.0, offset:uint = 0):ColorTransform {
-			var bitmask:uint = 0xFF;
-			var colorTransform:ColorTransform = new ColorTransform();
-			colorTransform.redOffset = (color >> 16) - offset;
-			colorTransform.greenOffset = (color >> 8 & bitmask) - offset;
-			colorTransform.blueOffset = (color & bitmask & bitmask) - offset;
-			colorTransform.alphaMultiplier = alpha;
+		private static const BITMASK:uint = 0xFF;
 
-			return colorTransform;
+		public static function transform(color:uint = 0, alpha:Number = 1.0, brightness:Number = 1.0, offset:int = 0):ColorTransform {
+			var transform:ColorTransform = new ColorTransform();
+			transform.redOffset = (color >> 16) - offset;
+			transform.greenOffset = (color >> 8 & BITMASK) - offset;
+			transform.blueOffset = (color & BITMASK & BITMASK) - offset;
+			transform.redMultiplier *= brightness;
+			transform.greenMultiplier *= brightness;
+			transform.blueMultiplier *= brightness;
+			transform.alphaMultiplier = alpha;
+
+			return transform;
 		}
 	}
 }

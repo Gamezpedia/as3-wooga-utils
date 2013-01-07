@@ -240,7 +240,7 @@ package net.wooga.utils.types {
 		}
 
 		public static function colorize(child:DisplayObject, color:uint, offset:uint = 0):void {
-			child.transform.colorTransform = Colors.transform(color, 1.0, offset);
+			child.transform.colorTransform = Colors.transform(color, 1.0, 1.0, offset);
 		}
 	}
 }
