@@ -29,6 +29,26 @@ package net.wooga.utils.display {
 			return _frames[id] != null;
 		}
 
+		public static function parseFrameData(name:String, clip:DisplayObject, rect:Rectangle = null, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
+			rect ||= clip.getRect(clip);
+
+			var bitmapData:BitmapData = Bitmaps.draw(clip, rect, scale);
+			/*var visRect:Rectangle = Bitmaps.getVisibleRect(bitmapData);
+			visRect.width ||= 1;
+			visRect.height ||= 1;
+			var visBitmapData:BitmapData = new BitmapData(visRect.width, visRect.height, true, Bitmaps.TRANSPARENT);
+			visBitmapData.copyPixels(bitmapData, visRect, Bitmaps.DEFAULT_POINT);*/
+
+			frameData ||= new FrameDataVO();
+			frameData.name = name;
+			frameData.bitmapData = bitmapData;
+			frameData.regX = rect.x;// + visRect.x;
+			frameData.regY = rect.y;// + visRect.y;
+			frameData.scaleX = frameData.scaleY = scale;
+
+			return frameData;
+		}
+
 		private static function createFrameId(type:String, colorMap:Dictionary, scale:Number):String {
 			var colors:Array = [];
 
@@ -114,26 +134,6 @@ package net.wooga.utils.display {
 			var height:Number = Math.abs(top - bottom);
 
 			return new Rectangle(left, top, width, height);
-		}
-
-		public static function parseFrameData(name:String, clip:DisplayObject, rect:Rectangle = null, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
-			rect ||= clip.getRect(clip);
-
-			var bitmapData:BitmapData = Bitmaps.draw(clip, rect, scale);
-			var visRect:Rectangle = Bitmaps.getVisibleRect(bitmapData);
-			visRect.width ||= 1;
-			visRect.height ||= 1;
-			var visBitmapData:BitmapData = new BitmapData(visRect.width, visRect.height, true, Bitmaps.TRANSPARENT);
-			visBitmapData.copyPixels(bitmapData, visRect, Bitmaps.DEFAULT_POINT);
-
-			frameData ||= new FrameDataVO();
-			frameData.name = name;
-			frameData.bitmapData = visBitmapData;
-			frameData.regX = rect.x + visRect.x;
-			frameData.regY = rect.y + visRect.y;
-			frameData.scaleX = frameData.scaleY = scale;
-
-			return frameData;
 		}
 
 		private static function getFrameData(frame:int, frames:Vector.<FrameDataVO>):FrameDataVO {
