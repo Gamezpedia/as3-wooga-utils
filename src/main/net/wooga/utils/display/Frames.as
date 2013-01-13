@@ -14,13 +14,18 @@ package net.wooga.utils.display {
 
 		public static function getFrames(type:String, colorMap:Dictionary = null, scale:Number = 1.0):Vector.<FrameDataVO> {
 			var id:String = createFrameId(type, colorMap, scale);
+			var frames:Vector.<FrameDataVO> = _frames[id];
 
-			if (!_frames[id]) {
+			if (!frames) {
 				var asset:MovieClip = Assets.getMovieClip(type);
-				_frames[id] = parseTimeline(id, asset, colorMap, scale);
+				_frames[id] = frames = parseTimeline(id, asset, colorMap, scale);
 			}
 
-			return _frames[id] as Vector.<FrameDataVO>;
+			return frames;
+		}
+
+		public static function resetFrameCache():void {
+			_frames = new Dictionary();
 		}
 
 		public static function hasFrames(type:String, colorMap:Dictionary = null, scale:Number = 1.0):Boolean {
@@ -41,7 +46,7 @@ package net.wooga.utils.display {
 
 			frameData ||= new FrameDataVO();
 			frameData.name = name;
-			frameData.bitmapData = bitmapData;
+			frameData.bitmapData = bitmapData;//visBitmapData;
 			frameData.regX = rect.x;// + visRect.x;
 			frameData.regY = rect.y;// + visRect.y;
 			frameData.scaleX = frameData.scaleY = scale;
