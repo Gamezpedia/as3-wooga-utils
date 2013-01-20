@@ -12,6 +12,7 @@
 		private var _scaleY:Number;
 		private var _usePreviousFrame:Boolean;
 		private var _isVisible:Boolean = true;
+		private var _isHitarea:Boolean;
 
 		public function FrameDataVO(name:String = null, bmd:BitmapData = null, regX:Number = 0, regY:Number = 0, scaleX:Number = 1.0, scaleY:Number = 1.0) {
 			_name = name;
@@ -129,6 +130,7 @@
 			data.offsetX = _offsetX;
 			data.offsetY = _offsetY;
 			data.isVisible = _isVisible;
+			data.isHitarea = _isHitarea;
 			data.usePreviousFrame = _usePreviousFrame;
 
 			return data;
@@ -140,6 +142,14 @@
 
 		public function set isVisible(value:Boolean):void {
 			_isVisible = value;
+		}
+
+		public function get isHitarea():Boolean {
+			return _isHitarea;
+		}
+
+		public function set isHitarea(value:Boolean):void {
+			_isHitarea = value;
 		}
 	}
 }
