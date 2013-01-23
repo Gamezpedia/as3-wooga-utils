@@ -211,7 +211,7 @@ package net.wooga.utils.types {
 		 * 0 is center and middle
 		 **/
 		private static function getRegPoint(display:DisplayObject, xDir:int = 0, yDir:int = 0):Point {
-			var rect:Rectangle = display.getRect(display);
+			var rect:Rectangle = display.getBounds(display);
 			var halfWidth:Number = rect.width * 0.5;
 			var halfHeight:Number = rect.height * 0.5;
 			var centerX:Number = rect.x + halfWidth;

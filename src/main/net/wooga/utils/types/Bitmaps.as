@@ -11,10 +11,10 @@ package net.wooga.utils.types {
 		public static const OPAQUE:uint = 0xFF000000;
 
 		public static function draw(display:DisplayObject, rect:Rectangle = null, scale:Number = 1.0, transparent:Boolean = true, color:uint = TRANSPARENT):BitmapData {
-			rect ||= display.getRect(display);
+			rect ||= display.getBounds(display);
 
-			var width:int = Math.ceil(rect.width * scale);
-			var height:int = Math.ceil(rect.height * scale);
+			var width:Number = Math.max(rect.width * scale, 1);
+			var height:Number = Math.max(rect.height * scale, 1);
 			var bitmapData:BitmapData;
 
 			if (width && height) {
@@ -37,8 +37,8 @@ package net.wooga.utils.types {
 		public static function scale(bitmapData:BitmapData, scale:Number):BitmapData {
 			scale = Math.abs(scale);
 
-			var width:int = Math.ceil(bitmapData.width * scale) || 1;
-			var height:int = Math.ceil(bitmapData.height * scale) || 1;
+			var width:int = bitmapData.width * scale || 1;
+			var height:int = bitmapData.height * scale || 1;
 			var transparent:Boolean = bitmapData.transparent;
 			var result:BitmapData = new BitmapData(width, height, transparent);
 			var matrix:Matrix = new Matrix();

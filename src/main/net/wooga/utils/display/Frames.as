@@ -35,7 +35,7 @@ package net.wooga.utils.display {
 		}
 
 		public static function parseFrameData(name:String, clip:DisplayObject, rect:Rectangle = null, scale:Number = 1.0, frameData:FrameDataVO = null):FrameDataVO {
-			rect ||= clip.getRect(clip);
+			rect ||= clip.getBounds(clip);
 
 			var bitmapData:BitmapData = Bitmaps.draw(clip, rect, scale);
 			/*var visRect:Rectangle = Bitmaps.getVisibleRect(bitmapData);
@@ -128,7 +128,7 @@ package net.wooga.utils.display {
 
 			for (var i:int = 1; i <= totalFrames; ++i) {
 				clip.gotoAndStop(i);
-				var rect:Rectangle = clip.getRect(clip);
+				var rect:Rectangle = clip.getBounds(clip);
 				top = Math.min(top, rect.top);
 				bottom = Math.max(bottom, rect.bottom);
 				left = Math.min(left, rect.left);
