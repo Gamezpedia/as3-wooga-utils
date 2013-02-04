@@ -1,5 +1,6 @@
 package net.wooga.utils.sound {
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundLoaderContext;
@@ -7,23 +8,25 @@ package net.wooga.utils.sound {
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 
+	import net.wooga.gamex.consts.SoundsConsts;
+
 	public class SoundService {
-		public static const INFINITE_LOOP:int = -1;
 
 		private var _sounds:Dictionary = new Dictionary();
+		private var _channels:Dictionary = new Dictionary();
 		private var _channelGroups:Dictionary = new Dictionary();
 
 		public function loadSound(id:String, url:String):void {
 			var request:URLRequest = new URLRequest(url);
-			var context:SoundLoaderContext = new SoundLoaderContext();
-			var sound:Sound = new Sound(request, context);
-			sound.addEventListener(IOErrorEvent.IO_ERROR, onError)
-
+			var context:SoundLoaderContext = new SoundLoaderContext(8000, true);
+			var sound:Sound = new Sound();
+			sound.load(request, context);
+			sound.addEventListener(IOErrorEvent.IO_ERROR, onError);
 			storeSound(id, sound);
 		}
 
 		private function onError(event:IOErrorEvent):void {
-
+			log("IO Error while loading sound " + event);
 		}
 
 		public function storeSound(id:String, sound:Sound):void {
@@ -38,9 +41,9 @@ package net.wooga.utils.sound {
 		public function playSound(id:String, groupId:String = "", loops:int = 1, startTime:Number = 0, autoRemove:Boolean = true):SoundChannel {
 			var sound:Sound = getSound(id);
 			var channel:SoundChannel;
-
 			if (sound) {
 				var group:ChannelGroup = getGroup(groupId);
+				log("SoundID "+id);
 				channel = createChannel(sound, startTime, loops, group.muted ? 0 : group.volume);
 				group.add(channel, sound, autoRemove);
 			}
@@ -73,15 +76,33 @@ package net.wooga.utils.sound {
 		}
 
 		private function createChannel(sound:Sound, startTime:Number, loops:int, volume:Number):SoundChannel {
-			loops = (loops == INFINITE_LOOP) ? int.MAX_VALUE : loops;
+			loops = (loops == SoundsConsts.INFINITE_LOOP) ? int.MAX_VALUE : loops;
 			var transform:SoundTransform = new SoundTransform(volume);
+			log("Volume " +volume + " BytesLoaded "+ sound.bytesLoaded +" BytesTotal "+ sound.bytesTotal);
+			sound.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			var channel:SoundChannel = sound.play(startTime, loops, transform);
-
 			return channel;
 		}
 
-		private function getGroup(id:String):ChannelGroup {
+		private function onProgress(event:ProgressEvent):void
+		{
+			var loadTime:Number = event.bytesLoaded / event.bytesTotal;
+			var LoadPercent:uint = Math.round(100 * loadTime);
+			log("Loaded" + LoadPercent);
+		}
+
+		public function getGroup(id:String):ChannelGroup
+		{
 			return _channelGroups[id] ||= new ChannelGroup();
+		}
+		public function storeChannel(id:String, soundChannel:SoundChannel):void
+		{
+			_channels[id] = soundChannel;
+		}
+
+		public function getChannel(id:String):Dictionary
+		{
+			return _channels[id] ||= new SoundChannel();
 		}
 	}
 }
