@@ -25,6 +25,20 @@ package net.wooga.utils.sound {
 			delete _channels[channel];
 		}
 
+		public function removeAllChannels():void
+		{
+				for(var channel:* in _channels)
+				{
+					if(channel)
+					var soundChannel:SoundChannel = SoundChannel(channel);
+					log(channel);
+					{
+						remove(soundChannel);
+					}
+				}
+			_channels = new Dictionary();
+		}
+
 		private function onSoundComplete(event:Event):void {
 			var channel:SoundChannel = SoundChannel(event.target);
 			remove(channel);

@@ -13,8 +13,8 @@ package net.wooga.utils.sound {
 	public class SoundService {
 
 		private var _sounds:Dictionary = new Dictionary();
-		private var _channels:Dictionary = new Dictionary();
 		private var _channelGroups:Dictionary = new Dictionary();
+		private var _soundChannels:Dictionary = new Dictionary();
 
 		public function loadSound(id:String, url:String):void {
 			var request:URLRequest = new URLRequest(url);
@@ -81,7 +81,18 @@ package net.wooga.utils.sound {
 			log("Volume " +volume + " BytesLoaded "+ sound.bytesLoaded +" BytesTotal "+ sound.bytesTotal);
 			sound.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			var channel:SoundChannel = sound.play(startTime, loops, transform);
+			addChannel(channel, sound)
 			return channel;
+		}
+
+		public function addChannel(channel:SoundChannel, sound:Sound):void
+		{
+			_soundChannels[sound] = channel;
+		}
+
+		public function getChannel(sound:Sound):SoundChannel
+		{
+			return _soundChannels[sound];
 		}
 
 		private function onProgress(event:ProgressEvent):void
@@ -94,15 +105,6 @@ package net.wooga.utils.sound {
 		public function getGroup(id:String):ChannelGroup
 		{
 			return _channelGroups[id] ||= new ChannelGroup();
-		}
-		public function storeChannel(id:String, soundChannel:SoundChannel):void
-		{
-			_channels[id] = soundChannel;
-		}
-
-		public function getChannel(id:String):Dictionary
-		{
-			return _channels[id] ||= new SoundChannel();
 		}
 	}
 }
