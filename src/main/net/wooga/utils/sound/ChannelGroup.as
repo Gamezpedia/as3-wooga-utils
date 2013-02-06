@@ -1,19 +1,30 @@
 package net.wooga.utils.sound {
+	import com.greensock.TweenMax;
+
 	import flash.events.Event;
+	import flash.events.ProgressEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.utils.Dictionary;
 
-	public class ChannelGroup {
+	import net.wooga.gamex.consts.SoundsConsts;
+
+	public class ChannelGroup{
 		private var _muted:Boolean = false;
 		private var _volume:Number = 1.0;
 		private var _channels:Dictionary = new Dictionary();
+		private var _sounds:Dictionary = new Dictionary();
+		private var _groupId:String;
 
-		public function add(channel:SoundChannel, sound:Sound, autoRemove:Boolean):void {
+		public function add(channel:SoundChannel, sound:Sound, autoRemove:Boolean, groupId:String):void {
+
 			_channels[channel] = sound;
+			_sounds[sound] = channel;
+			_groupId = groupId;
 
 			if (autoRemove && channel) {
+				//sound.addEventListener(ProgressEvent.PROGRESS, onProgress);
 				channel.addEventListener(Event.SOUND_COMPLETE, onSoundComplete);
 			}
 		}
@@ -31,7 +42,6 @@ package net.wooga.utils.sound {
 				{
 					if(channel)
 					var soundChannel:SoundChannel = SoundChannel(channel);
-					log(channel);
 					{
 						remove(soundChannel);
 					}
@@ -41,6 +51,16 @@ package net.wooga.utils.sound {
 
 		private function onSoundComplete(event:Event):void {
 			var channel:SoundChannel = SoundChannel(event.target);
+			if(_groupId == SoundsConsts.MUSIC)
+			{
+				log("FadeOutMusic");
+			}else{
+				remove(channel);
+			}
+		}
+
+		private function stopSound(channel:SoundChannel):void
+		{
 			remove(channel);
 		}
 

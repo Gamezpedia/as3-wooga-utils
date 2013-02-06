@@ -1,4 +1,8 @@
 package net.wooga.utils.sound {
+	import com.greensock.TweenMax;
+
+	import flash.events.Event;
+
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.media.Sound;
@@ -43,12 +47,23 @@ package net.wooga.utils.sound {
 			var channel:SoundChannel;
 			if (sound) {
 				var group:ChannelGroup = getGroup(groupId);
-				log("SoundID "+id);
-				channel = createChannel(sound, startTime, loops, group.muted ? 0 : group.volume);
-				group.add(channel, sound, autoRemove);
+				var volume:Number = defineVolume(group, groupId);
+				channel = createChannel(sound, startTime, loops, volume);
+				group.add(channel, sound, autoRemove, groupId);
 			}
 
 			return channel;
+		}
+
+		private function defineVolume(group:ChannelGroup, groupId:String):Number
+		{
+			var volume:Number = group.muted ? 0 : group.volume;
+
+			if(groupId == SoundsConsts.MUSIC)
+			{
+				volume = 0;
+			}
+			return volume;
 		}
 
 		public function removeChannel(channel:SoundChannel, groupId:String = ""):void {
@@ -78,11 +93,53 @@ package net.wooga.utils.sound {
 		private function createChannel(sound:Sound, startTime:Number, loops:int, volume:Number):SoundChannel {
 			loops = (loops == SoundsConsts.INFINITE_LOOP) ? int.MAX_VALUE : loops;
 			var transform:SoundTransform = new SoundTransform(volume);
-			log("Volume " +volume + " BytesLoaded "+ sound.bytesLoaded +" BytesTotal "+ sound.bytesTotal);
-			sound.addEventListener(ProgressEvent.PROGRESS, onProgress);
-			var channel:SoundChannel = sound.play(startTime, loops, transform);
-			addChannel(channel, sound)
+			//sound.addEventListener(ProgressEvent.PROGRESS, onProgress);
+
+			try{
+				var channel:SoundChannel = sound.play(startTime, loops, transform);
+			}
+
+			TweenMax.to(transform, SoundsConsts.FADE_TIME, {volume:SoundsConsts.VOLUME, onUpdate:fadeIn, onUpdateParams:[channel, transform]});
+			addChannel(channel, sound);
 			return channel;
+		}
+
+		private function fadeIn(channel:SoundChannel, transformation:SoundTransform):void
+		{
+			log(transformation.volume);
+			channel.soundTransform = transformation;
+		}
+
+//		private function onProgress(event:ProgressEvent):void
+//		{
+//			var sound:Sound = Sound(event.target);
+//			var loadTime:Number = event.bytesLoaded / event.bytesTotal;
+//			var loadedPercent:uint = Math.round(100 * loadTime);
+//			log("Loaded" + loadedPercent);
+//			if (loadedPercent == 100)
+//			{
+//				sound.removeEventListener(ProgressEvent.PROGRESS, onProgress);
+//				var channel:SoundChannel = _sounds[sound];
+//				addEventListener(Event.ENTER_FRAME, onSoundProgress);
+//			}
+//		}
+//
+//		private function onSoundProgress(event:ProgressEvent):void
+//		{
+//			var sound:Sound = Sound(event.target);
+//			var channel:SoundChannel = _sounds[sound];
+//			var soundTransform:SoundTransform = new SoundTransform(volume);
+//			log(sound.length, channel.position + SoundsConsts.FADE_TIME)
+//			if(sound.length <= channel.position + SoundsConsts.FADE_TIME){
+//				channel.removeEventListener(ProgressEvent.PROGRESS, onSoundProgress);
+//				TweenMax.to(soundTransform, SoundsConsts.FADE_TIME,{volume:0, onUpdate:fadeOut, onUpdateParams:[channel, soundTransform]});
+//			}
+//		}
+
+		private function fadeOut(channel:SoundChannel, transformation:SoundTransform):void
+		{
+			log("fadeOut");
+			channel.soundTransform = transformation;
 		}
 
 		public function addChannel(channel:SoundChannel, sound:Sound):void
@@ -93,13 +150,6 @@ package net.wooga.utils.sound {
 		public function getChannel(sound:Sound):SoundChannel
 		{
 			return _soundChannels[sound];
-		}
-
-		private function onProgress(event:ProgressEvent):void
-		{
-			var loadTime:Number = event.bytesLoaded / event.bytesTotal;
-			var LoadPercent:uint = Math.round(100 * loadTime);
-			log("Loaded" + LoadPercent);
 		}
 
 		public function getGroup(id:String):ChannelGroup
