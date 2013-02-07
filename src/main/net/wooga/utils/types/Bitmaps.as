@@ -13,9 +13,10 @@ package net.wooga.utils.types {
 		public static function draw(display:DisplayObject, rect:Rectangle = null, scale:Number = 1.0, transparent:Boolean = true, color:uint = TRANSPARENT):BitmapData {
 			rect ||= display.getBounds(display);
 
-			var width:Number = Math.max(rect.width * scale, 1);
-			var height:Number = Math.max(rect.height * scale, 1);
 			var bitmapData:BitmapData;
+			rect = roundRect(rect, scale);
+			var width:Number = rect.width;
+			var height:Number = rect.height;
 
 			if (width && height) {
 				var matrix:Matrix = new Matrix();
@@ -23,11 +24,31 @@ package net.wooga.utils.types {
 				matrix.ty = -rect.y;
 				matrix.scale(scale, scale);
 
-				bitmapData = new BitmapData(width, height, transparent, color);
+				bitmapData = new BitmapData(rect.width, rect.height, transparent, color);
 				bitmapData.draw(display, matrix);
 			}
 
 			return bitmapData;
+		}
+
+		public static function roundRect(rect:Rectangle, scale:Number = 1.0):Rectangle {
+			var width:Number = rect.width * scale;
+			var height:Number = rect.height * scale;
+			var x:Number = rect.x;
+			var y:Number = rect.y;
+			var xInteger:int = Math.floor(x);
+			var yInteger:int = Math.floor(y);
+			var xFraction:Number = x - xInteger;
+			var yFraction:Number = y - yInteger;
+			var newWidth:int = Math.ceil(width + xFraction);
+			var newHeight:int = Math.ceil(height + yFraction);
+
+			rect.x = xInteger;
+			rect.y = yInteger;
+			rect.width = newWidth || 1;
+			rect.height = newHeight || 1;
+
+			return rect;
 		}
 
 		public static function getVisibleRect(bitmapData:BitmapData):Rectangle {
