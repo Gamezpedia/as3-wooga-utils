@@ -7,10 +7,8 @@ package net.wooga.utils.sound {
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
-
-	import net.wooga.gamex.consts.SoundsConsts;
-
 	public class SoundService {
+		public static const INFINITE_LOOP:int = -1;
 
 		private var _sounds:Dictionary = new Dictionary();
 		private var _channelGroups:Dictionary = new Dictionary();
@@ -82,7 +80,7 @@ package net.wooga.utils.sound {
 		}
 
 		private function createChannel(sound:Sound, startTime:Number, loops:int, volume:Number, id:String):SoundChannel {
-			loops = (loops == SoundsConsts.INFINITE_LOOP) ? int.MAX_VALUE : loops;
+			loops = (loops == INFINITE_LOOP) ? int.MAX_VALUE : loops;
 			var transform:SoundTransform = new SoundTransform(volume);
 
 			try
