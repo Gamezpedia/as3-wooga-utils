@@ -1,8 +1,6 @@
 package net.wooga.utils.sound {
-	import com.greensock.TweenMax;
 
 	import flash.events.IOErrorEvent;
-	import flash.events.ProgressEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundLoaderContext;
