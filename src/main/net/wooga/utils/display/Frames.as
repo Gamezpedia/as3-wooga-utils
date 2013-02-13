@@ -38,10 +38,10 @@ package net.wooga.utils.display {
 			rect ||= clip.getBounds(clip);
 
 			var bitmapData:BitmapData = Bitmaps.draw(clip, rect, scale);
-			//var visRect:Rectangle = Bitmaps.getVisibleRect(bitmapData);
-			//visRect = Bitmaps.roundRect(visRect);
-			//var visBitmapData:BitmapData = new BitmapData(visRect.width, visRect.height, true, Bitmaps.TRANSPARENT);
-			//visBitmapData.copyPixels(bitmapData, visRect, Bitmaps.DEFAULT_POINT);
+			/*var visRect:Rectangle = Bitmaps.getVisibleRect(bitmapData);
+			 visRect = Bitmaps.roundRect(visRect);
+			 var visBitmapData:BitmapData = new BitmapData(visRect.width, visRect.height, true, Bitmaps.TRANSPARENT);
+			 visBitmapData.copyPixels(bitmapData, visRect, Bitmaps.DEFAULT_POINT);*/
 
 			frameData ||= new FrameDataVO();
 			frameData.name = name;

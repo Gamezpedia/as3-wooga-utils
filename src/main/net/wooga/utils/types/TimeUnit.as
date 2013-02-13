@@ -27,6 +27,27 @@ package net.wooga.utils.types {
 			return unit;
 		}
 
+		public static function initHours(value:Number):TimeUnit {
+			var unit:TimeUnit = new TimeUnit();
+			unit.hours = value;
+
+			return unit;
+		}
+
+		public static function initDays(value:Number):TimeUnit {
+			var unit:TimeUnit = new TimeUnit();
+			unit.days = value;
+
+			return unit;
+		}
+
+		public static function initWeeks(value:Number):TimeUnit {
+			var unit:TimeUnit = new TimeUnit();
+			unit.weeks = value;
+
+			return unit;
+		}
+
 		private var _milliSeconds:Number = 0;
 		private var _seconds:Number = 0;
 		private var _minutes:Number = 0;

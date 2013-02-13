@@ -24,7 +24,7 @@ package net.wooga.utils.sound {
 		}
 
 		private function onError(event:IOErrorEvent):void {
-			log("IO Error while loading sound " + event);
+			l("IO Error while loading sound " + event);
 		}
 
 		public function storeSound(id:String, sound:Sound):void {
