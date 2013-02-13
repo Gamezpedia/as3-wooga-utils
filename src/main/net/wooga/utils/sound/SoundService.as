@@ -88,7 +88,7 @@ package net.wooga.utils.sound {
 				var channel:SoundChannel = sound.play(startTime, loops, transform);
 			}catch(e:Error)
 			{
-				throw new Error("Error playing sound with id: ",id);
+				throw new Error("Error playing sound with id: " + id);
 			}
 			addChannel(channel, sound);
 			return channel;
