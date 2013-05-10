@@ -7,6 +7,9 @@ package net.wooga.utils.sound {
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
+
+	import net.wooga.utils.errors.ErrorDetails;
+
 	public class SoundService {
 		public static const INFINITE_LOOP:int = -1;
 
@@ -88,7 +91,8 @@ package net.wooga.utils.sound {
 				var channel:SoundChannel = sound.play(startTime, loops, transform);
 			}catch(e:Error)
 			{
-				throw new Error("Error playing sound with id: " + id);
+				var details:ErrorDetails = new ErrorDetails("Error playing sound", id);
+				throw new Error(details);
 			}
 			addChannel(channel, sound);
 			return channel;
