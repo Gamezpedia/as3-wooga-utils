@@ -25,6 +25,20 @@ package net.wooga.utils.display {
 		}
 
 		public static function resetFrameCache():void {
+			var frames:Vector.<FrameDataVO>;
+			var frame:FrameDataVO;
+			var bitmapData:BitmapData;
+			var i:int;
+			for (var id:String in _frames)
+			{
+				frames = _frames[id];
+				for (i = 0 ; i < frames.length ; i++)
+				{
+					frame = frames[i];
+					bitmapData = frame.bitmapData;
+					bitmapData.dispose();
+				}
+			}
 			_frames = new Dictionary();
 		}
 
@@ -86,8 +100,18 @@ package net.wooga.utils.display {
 			var prevFrame:FrameDataVO;
 			var clipRect:Rectangle = getClipRectangle(clip, totalFrames);
 
+			var oneFrame:Boolean = true;
 			for (var frame:int = 1; frame <= totalFrames; ++frame) {
 				prevFrame = parseFrame(frame, frames, clip, colors, name, clipRect, scale, prevFrame);
+				if (frame > 1 && !prevFrame.usePreviousFrame)
+				{
+					oneFrame = false;
+				}
+			}
+
+			if (oneFrame)
+			{
+				frames.splice(1 , int.MAX_VALUE);
 			}
 
 			return frames;
